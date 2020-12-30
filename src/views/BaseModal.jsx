@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 
-export default function BaseModal({ modalVisible, onClose, styles }) {
+export default function BaseModal({ modalVisible, onClose, style }) {
   return (
     <Modal
       animationType="slide"
@@ -18,21 +18,21 @@ export default function BaseModal({ modalVisible, onClose, styles }) {
         Alert.alert("Modal has been closed.");
       }}
     >
-      <View style={styles.centeredView}>
+      <View style={style.centeredView}>
         <View style={modalStyles.modalView}>
-          <CloseModalButton styles={styles} onPress={onClose} />
+          <CloseModalButton style={style} onPress={onClose} />
           <Text style={modalStyles.modalText}>Hello World!</Text>
-          <View style={styles.bottom}>
+          <View style={style.bottom}>
             <View style={{ flexDirection: "row" }}>
               <ModalControlButton
                 text={"Start"}
                 onPress={onClose}
-                styles={styles}
+                style={style}
               />
               <ModalControlButton
                 text={"Edit"}
                 onPress={onClose}
-                styles={styles}
+                style={style}
               />
             </View>
           </View>
@@ -42,27 +42,27 @@ export default function BaseModal({ modalVisible, onClose, styles }) {
   );
 }
 
-function ModalControlButton({ text, onPress, styles }) {
+function ModalControlButton({ text, onPress, style }) {
   return (
     <TouchableHighlight
       style={{
-        ...styles.button,
+        ...style.button,
         width: "46%",
         marginHorizontal: "2%",
         backgroundColor: "#2196F3",
       }}
       onPress={onPress}
     >
-      <Text style={styles.textStyle}>{text}</Text>
+      <Text style={style.textStyle}>{text}</Text>
     </TouchableHighlight>
   );
 }
 
-function CloseModalButton({ onPress, styles }) {
+function CloseModalButton({ onPress, style }) {
   return (
     <TouchableHighlight
       style={{
-        ...styles.button,
+        ...style.button,
         position: "absolute",
         top: 10,
         right: 10,
@@ -71,7 +71,7 @@ function CloseModalButton({ onPress, styles }) {
       }}
       onPress={onPress}
     >
-      <Text style={styles.textStyle}>{"Close"}</Text>
+      <Text style={style.textStyle}>{"Close"}</Text>
     </TouchableHighlight>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View, ScrollView } from "react-native";
 import CardList from "./src/views/CardList";
+import NavBar from "./src/views/NavBar";
 
 const App = () => {
   const data = [
@@ -9,10 +10,24 @@ const App = () => {
     { id: 3, title: "Poopy plop!" },
   ];
 
+  const navData = [
+    { id: 1, title: "Session" },
+    { id: 2, title: "Program" },
+    { id: 3, title: "History" },
+    { id: 4, title: "Dashboard" },
+  ];
+
   return (
-    <SafeAreaView>
-      <CardList data={data} numColumns={2} styles={styles} />
-    </SafeAreaView>
+    <View style={{ flex: 1 }}>
+      <View style={{ height: "90%", backgroundColor: "black" }}>
+        <SafeAreaView>
+          <CardList data={data} numColumns={2} style={styles} />
+        </SafeAreaView>
+      </View>
+      <View style={{ height: "10%", backgroundColor: "grey" }}>
+        <NavBar data={navData} style={styles} />
+      </View>
+    </View>
   );
 };
 

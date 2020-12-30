@@ -7,17 +7,13 @@ export default function BaseCard({
   modalVisible,
   onPress,
   onClose,
-  styles,
+  style,
 }) {
   return (
     <View style={cardStyles.cardView}>
-      <BaseModal
-        modalVisible={modalVisible}
-        onClose={onClose}
-        styles={styles}
-      />
+      <BaseModal modalVisible={modalVisible} onClose={onClose} style={style} />
       <TouchableHighlight style={cardStyles.cardButton} onPress={onPress}>
-        <Text style={styles.textStyle}>{data.title}</Text>
+        <Text style={style.textStyle}>{data.title}</Text>
       </TouchableHighlight>
     </View>
   );
