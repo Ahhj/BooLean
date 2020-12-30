@@ -39,7 +39,6 @@ export default function CardList({ data, numColumns, style }) {
 const listStyles = StyleSheet.create({
   list: {
     marginHorizontal: "1%",
-    height: "100%",
   },
   item: {
     backfaceVisibility: "hidden",
