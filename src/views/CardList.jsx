@@ -1,27 +1,16 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import BaseCard from "./BaseCard";
 
-export default function CardList({ data, numColumns, style }) {
-  const [modalVisible, setModalVisible] = useState(false);
-
+export default function CardList({ data, numColumns, style, onPress }) {
   const width = `${(100 - numColumns * 2) / numColumns}%`;
-  const renderItem = useCallback(
-    ({ item }) => {
-      return (
-        <View style={{ ...listStyles.item, width }}>
-          <BaseCard
-            data={item}
-            modalVisible={modalVisible}
-            onPress={() => setModalVisible(true)}
-            onClose={() => setModalVisible(false)}
-            style={style}
-          />
-        </View>
-      );
-    },
-    [modalVisible, setModalVisible]
-  );
+  const renderItem = useCallback(({ item }) => {
+    return (
+      <View style={{ ...listStyles.item, width }}>
+        <BaseCard data={item} onPress={() => onPress(item)} style={style} />
+      </View>
+    );
+  }, []);
 
   return (
     <FlatList

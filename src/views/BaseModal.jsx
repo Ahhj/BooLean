@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  Alert,
-  Modal,
-  Text,
-  TouchableHighlight,
-  View,
-  StyleSheet,
-} from "react-native";
+import { Alert, Modal, View, StyleSheet } from "react-native";
 
-export default function BaseModal({ modalVisible, onClose, style }) {
+export default function BaseModal({ modalVisible, children }) {
   return (
     <Modal
       animationType="slide"
@@ -18,65 +11,20 @@ export default function BaseModal({ modalVisible, onClose, style }) {
         Alert.alert("Modal has been closed.");
       }}
     >
-      <View style={style.centeredView}>
-        <View style={modalStyles.modalView}>
-          <CloseModalButton style={style} onPress={onClose} />
-          <Text style={modalStyles.modalText}>Hello World!</Text>
-          <View style={style.bottom}>
-            <View style={{ flexDirection: "row" }}>
-              <ModalControlButton
-                text={"Start"}
-                onPress={onClose}
-                style={style}
-              />
-              <ModalControlButton
-                text={"Edit"}
-                onPress={onClose}
-                style={style}
-              />
-            </View>
-          </View>
-        </View>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>{children}</View>
       </View>
     </Modal>
   );
 }
 
-function ModalControlButton({ text, onPress, style }) {
-  return (
-    <TouchableHighlight
-      style={{
-        ...style.button,
-        width: "46%",
-        marginHorizontal: "2%",
-        backgroundColor: "#2196F3",
-      }}
-      onPress={onPress}
-    >
-      <Text style={style.textStyle}>{text}</Text>
-    </TouchableHighlight>
-  );
-}
-
-function CloseModalButton({ onPress, style }) {
-  return (
-    <TouchableHighlight
-      style={{
-        ...style.button,
-        position: "absolute",
-        top: 10,
-        right: 10,
-        marginHorizontal: "1%",
-        backgroundColor: "lightgrey",
-      }}
-      onPress={onPress}
-    >
-      <Text style={style.textStyle}>{"Close"}</Text>
-    </TouchableHighlight>
-  );
-}
-
-const modalStyles = StyleSheet.create({
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
   modalView: {
     margin: 20,
     width: "98%",

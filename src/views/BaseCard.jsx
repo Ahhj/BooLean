@@ -2,16 +2,9 @@ import React from "react";
 import { Text, TouchableHighlight, View, StyleSheet } from "react-native";
 import BaseModal from "./BaseModal";
 
-export default function BaseCard({
-  data,
-  modalVisible,
-  onPress,
-  onClose,
-  style,
-}) {
+export default function BaseCard({ data, onPress, style }) {
   return (
     <View style={cardStyles.cardView}>
-      <BaseModal modalVisible={modalVisible} onClose={onClose} style={style} />
       <TouchableHighlight style={cardStyles.cardButton} onPress={onPress}>
         <Text style={style.textStyle}>{data.title}</Text>
       </TouchableHighlight>

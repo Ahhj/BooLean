@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   SafeAreaView,
@@ -11,26 +11,14 @@ import {
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import CardList from "./src/views/CardList";
+import ProgramsScreen from "./src/views/ProgramsScreen";
 
 const Tab = createBottomTabNavigator();
 
-const ProgramScreen = () => {
-  const data = [
-    { id: 1, title: "Hello world!" },
-    { id: 2, title: "Goodbye world!" },
-    { id: 3, title: "Poopy plop!" },
-  ];
-  // const navigation = useNavigation();
-  //   <TouchableHighlight onPress={() => navigation.navigate("Home")}>
-  //     <Text>{"hello"}</Text>
-  //   </TouchableHighlight>
-  return (
-    <SafeAreaView style={{ container: { height: "100%" } }}>
-      <CardList data={data} numColumns={2} style={styles} />
-    </SafeAreaView>
-  );
-};
+// const navigation = useNavigation();
+//   <TouchableHighlight onPress={() => navigation.navigate("Home")}>
+//     <Text>{"hello"}</Text>
+//   </TouchableHighlight>
 
 function HomeScreen() {
   return (
@@ -40,9 +28,10 @@ function HomeScreen() {
   );
 }
 
-function NavTabs({ screens }) {
+function NavTabs({ sessionActive, setSessionActive }) {
   return (
     <Tab.Navigator
+      initialRouteName={"Programs"}
       tabBarOptions={{
         inactiveTintColor: "black",
         activeTintColor: "white",
@@ -51,47 +40,48 @@ function NavTabs({ screens }) {
         showIcon: true,
       }}
     >
-      {screens.map((screen) => {
-        return <Tab.Screen key={`${screen.id}`} {...screen} />;
-      })}
+      <Tab.Screen
+        key={"1"}
+        name={"Home"}
+        component={HomeScreen}
+        options={{
+          title: "Dashboard",
+          tabBarIcon: () => <Text>{"📈"}</Text>,
+        }}
+      />
+      <Tab.Screen
+        key={"2"}
+        name={"Programs"}
+        options={{
+          title: "Programs",
+          tabBarIcon: () => <Text>{"🏋️‍♀️"}</Text>,
+        }}
+      >
+        {() => (
+          <ProgramsScreen
+            style={styles}
+            {...{ sessionActive, setSessionActive }}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen
+        key={"3"}
+        name={"History"}
+        component={HomeScreen}
+        options={{
+          title: "History",
+          tabBarIcon: () => <Text>{"🕓"}</Text>,
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
 function App() {
-  const screens = [
-    {
-      id: 4,
-      name: "Home",
-      component: HomeScreen,
-      options: {
-        title: "Dashboard",
-        tabBarIcon: () => <Text>{"📈"}</Text>,
-      },
-    },
-    {
-      id: 2,
-      name: "Programs",
-      component: ProgramScreen,
-      options: {
-        title: "Programs",
-        tabBarIcon: () => <Text>{"🗂"}</Text>,
-      },
-    },
-    {
-      id: 3,
-      name: "History",
-      component: HomeScreen,
-      options: {
-        title: "History",
-        tabBarIcon: () => <Text>{"🕓"}</Text>,
-      },
-    },
-  ];
-
+  const [sessionActive, setSessionActive] = useState(false);
   return (
     <NavigationContainer>
-      <NavTabs screens={screens} />
+      <NavTabs {...{ sessionActive, setSessionActive }} />
     </NavigationContainer>
   );
 }
