@@ -1,12 +1,12 @@
 import React from "react";
 import { Alert, Modal, View, StyleSheet } from "react-native";
 
-export default function BaseModal({ modalVisible, children }) {
+export default function BaseModal({ visible, children }) {
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
+      visible={visible}
       onRequestClose={() => {
         Alert.alert("Modal has been closed.");
       }}

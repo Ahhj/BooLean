@@ -1,24 +1,13 @@
 import "react-native-gesture-handler";
 import React, { useState } from "react";
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableHighlight,
-} from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import ProgramsScreen from "./src/views/ProgramsScreen";
+import SessionModal from "./src/views/SessionModal";
 
 const Tab = createBottomTabNavigator();
-
-// const navigation = useNavigation();
-//   <TouchableHighlight onPress={() => navigation.navigate("Home")}>
-//     <Text>{"hello"}</Text>
-//   </TouchableHighlight>
 
 function HomeScreen() {
   return (
@@ -28,7 +17,12 @@ function HomeScreen() {
   );
 }
 
-function NavTabs({ sessionActive, setSessionActive }) {
+function NavTabs({
+  sessionActive,
+  setSessionActive,
+  modalVisible,
+  setModalVisible,
+}) {
   return (
     <Tab.Navigator
       initialRouteName={"Programs"}
@@ -59,9 +53,20 @@ function NavTabs({ sessionActive, setSessionActive }) {
       >
         {() => (
           <ProgramsScreen
+            onPress={(item) => setModalVisible(true)}
             style={styles}
-            {...{ sessionActive, setSessionActive }}
-          />
+          >
+            <SessionModal
+              active={sessionActive}
+              visible={modalVisible}
+              onStart={() => setSessionActive(true)}
+              onEdit={() => setSessionActive(true)}
+              onFinish={() => setSessionActive(false)}
+              onCancel={() => setSessionActive(false)}
+              onClose={() => setModalVisible(false)}
+              style={styles}
+            />
+          </ProgramsScreen>
         )}
       </Tab.Screen>
       <Tab.Screen
@@ -79,9 +84,13 @@ function NavTabs({ sessionActive, setSessionActive }) {
 
 function App() {
   const [sessionActive, setSessionActive] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <NavigationContainer>
-      <NavTabs {...{ sessionActive, setSessionActive }} />
+      <NavTabs
+        {...{ sessionActive, setSessionActive, modalVisible, setModalVisible }}
+      />
     </NavigationContainer>
   );
 }
@@ -93,24 +102,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
-  button: {
-    backgroundColor: "#F194FF",
-    borderRadius: 40,
-    padding: 20,
-    elevation: 2,
-  },
   textStyle: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    fontSize: 16,
   },
   top: {
     flex: 1,
     justifyContent: "flex-start",
+    alignItems: "flex-start",
     marginTop: 20,
   },
   bottom: {
     flex: 1,
+    alignItems: "flex-end",
     justifyContent: "flex-end",
     marginBottom: 0,
   },
