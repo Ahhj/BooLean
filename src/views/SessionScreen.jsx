@@ -2,7 +2,7 @@ import React from "react";
 import { View, SafeAreaView } from "react-native";
 import Button from "./Button";
 
-export default function SessionModal({
+export default function SessionScreen({
   active,
   visible,
   style,

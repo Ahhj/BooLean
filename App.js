@@ -1,142 +1,25 @@
 import "react-native-gesture-handler";
 import React, { useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  StatusBar,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { Text, StyleSheet, View, StatusBar, SafeAreaView } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import BannerTabBar from "./src/views/BannerTabBar";
 import ProgramsScreen from "./src/views/ProgramsScreen";
-import SessionModal from "./src/views/SessionModal";
+import SessionScreen from "./src/views/SessionScreen";
 import TouchableCard from "./src/views/TouchableCard";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 const WorkoutStack = createStackNavigator();
 
-function MyTabBar({ state, descriptors, navigation, ...sessionState }) {
-  const focusedOptions = descriptors[state.routes[state.index].key].options;
-
-  if (focusedOptions.tabBarVisible === false) {
-    return null;
-  }
-
-  return (
-    <View>
-      {sessionState.sessionActive ? (
-        <WorkoutBanner data={{ title: "Hello" }} navigation={navigation} />
-      ) : null}
-      <View
-        style={{ flexDirection: "row", height: 80, backgroundColor: "gray" }}
-      >
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel
-              : options.title !== undefined
-              ? options.title
-              : route.name;
-
-          const Icon =
-            options.tabBarIcon !== undefined
-              ? options.tabBarIcon
-              : options.icon !== undefined
-              ? options.icon
-              : null;
-
-          const isFocused = state.index === index;
-
-          const onPress = () => {
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
-
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
-
-          const onLongPress = () => {
-            navigation.emit({
-              type: "tabLongPress",
-              target: route.key,
-            });
-          };
-
-          return (
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={{ flex: 1 }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "flex-start",
-                  padding: 15,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon size={16} color={isFocused ? "white" : "black"} />
-                  <Text
-                    style={{
-                      color: isFocused ? "white" : "black",
-                      fontSize: 20,
-                    }}
-                  >
-                    {label}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
-  );
-}
-
 function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Home!</Text>
     </View>
-  );
-}
-
-function WorkoutBanner({ navigation, data }) {
-  return (
-    <SafeAreaView>
-      <TouchableCard
-        onPress={() => navigation.navigate("MyModal")}
-        style={{
-          ...styles,
-          cardView: { height: 80 },
-          cardButton: { borderRadius: 0, backgroundColor: "white" },
-        }}
-      >
-        <Text style={{ color: "black" }}>{data.title}</Text>
-      </TouchableCard>
-    </SafeAreaView>
   );
 }
 
@@ -156,7 +39,7 @@ function WorkoutStackScreen() {
         {() => (
           <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
             <StatusBar barStyle="dark-content" />
-            <NavTabs {...{ sessionActive }} />
+            <NavTabs {...{ sessionState: { active: sessionActive } }} />
           </View>
         )}
       </WorkoutStack.Screen>
@@ -175,7 +58,7 @@ function WorkoutStackScreen() {
               }}
             >
               <StatusBar barStyle="dark-content" />
-              <SessionModal
+              <SessionScreen
                 active={sessionActive}
                 visible={modalVisible}
                 onStart={() => setSessionActive(true)}
@@ -193,11 +76,39 @@ function WorkoutStackScreen() {
   );
 }
 
-function NavTabs({ sessionActive }) {
+function SessionBanner({ sessionState, navigation }) {
+  return (
+    <SafeAreaView>
+      <TouchableCard
+        onPress={() => navigation.navigate("MyModal")}
+        style={{
+          ...styles,
+          cardView: { height: 80 },
+          cardButton: { borderRadius: 0, backgroundColor: "white" },
+        }}
+      >
+        <Text style={{ color: "black" }}>Hello</Text>
+      </TouchableCard>
+    </SafeAreaView>
+  );
+}
+
+function NavTabs({ sessionState }) {
   return (
     <Tab.Navigator
       initialRouteName={"Programs"}
-      tabBar={(props) => <MyTabBar {...{ ...props, sessionActive }} />}
+      tabBar={(props) => (
+        <BannerTabBar
+          {...{
+            ...props,
+            Banner: sessionState.active
+              ? ({ navigation }) => (
+                  <SessionBanner {...{ sessionState, navigation }} />
+                )
+              : null,
+          }}
+        />
+      )}
     >
       <Tab.Screen
         key={"1"}
