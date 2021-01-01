@@ -6,7 +6,7 @@ export default function CardList({ data, numColumns, style, onPress }) {
   const width = `${(100 - numColumns * 2) / numColumns}%`;
   const renderItem = useCallback(({ item }) => {
     return (
-      <View style={{ ...listStyles.item, width }}>
+      <View style={{ ...styles.item, width }}>
         <BaseCard data={item} onPress={() => onPress(item)} style={style} />
       </View>
     );
@@ -14,7 +14,7 @@ export default function CardList({ data, numColumns, style, onPress }) {
 
   return (
     <FlatList
-      style={listStyles.list}
+      style={styles.list}
       key="blah2"
       data={data}
       renderItem={renderItem}
@@ -25,7 +25,7 @@ export default function CardList({ data, numColumns, style, onPress }) {
   );
 }
 
-const listStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   list: {
     marginHorizontal: "1%",
   },

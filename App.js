@@ -1,6 +1,13 @@
 import "react-native-gesture-handler";
 import React, { useState } from "react";
-import { Text, StyleSheet, View, StatusBar, SafeAreaView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  StatusBar,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -14,6 +21,100 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 const Tab = createBottomTabNavigator();
 const WorkoutStack = createStackNavigator();
 
+function MyTabBar({ state, descriptors, navigation, ...sessionState }) {
+  const focusedOptions = descriptors[state.routes[state.index].key].options;
+
+  if (focusedOptions.tabBarVisible === false) {
+    return null;
+  }
+
+  return (
+    <View>
+      {sessionState.sessionActive ? (
+        <WorkoutBanner data={{ title: "Hello" }} navigation={navigation} />
+      ) : null}
+      <View
+        style={{ flexDirection: "row", height: 80, backgroundColor: "gray" }}
+      >
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name;
+
+          const Icon =
+            options.tabBarIcon !== undefined
+              ? options.tabBarIcon
+              : options.icon !== undefined
+              ? options.icon
+              : null;
+
+          const isFocused = state.index === index;
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: "tabLongPress",
+              target: route.key,
+            });
+          };
+
+          return (
+            <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={{ flex: 1 }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "flex-start",
+                  padding: 15,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Icon size={16} color={isFocused ? "white" : "black"} />
+                  <Text
+                    style={{
+                      color: isFocused ? "white" : "black",
+                      fontSize: 20,
+                    }}
+                  >
+                    {label}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
 function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -22,16 +123,17 @@ function HomeScreen() {
   );
 }
 
-function WorkoutBanner() {
-  const navigation = useNavigation();
+function WorkoutBanner({ navigation, data }) {
   return (
     <SafeAreaView>
       <BaseCard
-        data={{}}
+        data={data}
         onPress={() => navigation.navigate("MyModal")}
         style={{
           ...styles,
-          cardView: { height: "95%", marginHorizontal: "2%" },
+          cardView: { height: 80 },
+          cardButton: { borderRadius: 0, backgroundColor: "white" },
+          textStyle: { color: "black" },
         }}
       />
     </SafeAreaView>
@@ -39,8 +141,8 @@ function WorkoutBanner() {
 }
 
 function WorkoutStackScreen() {
-  const [sessionActive, setSessionActive] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [sessionActive, setSessionActive] = useState(true);
   return (
     <WorkoutStack.Navigator
       {...{
@@ -54,13 +156,7 @@ function WorkoutStackScreen() {
         {() => (
           <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
             <StatusBar barStyle="dark-content" />
-
-            <View style={{ height: `${sessionActive ? 15 : 0}%` }}>
-              <WorkoutBanner />
-            </View>
-            <View style={{ flex: 1, height: `${sessionActive ? 85 : 0}%` }}>
-              <NavTabs />
-            </View>
+            <NavTabs {...{ sessionActive }} />
           </View>
         )}
       </WorkoutStack.Screen>
@@ -97,20 +193,11 @@ function WorkoutStackScreen() {
   );
 }
 
-function NavTabs({}) {
+function NavTabs({ sessionActive }) {
   return (
     <Tab.Navigator
       initialRouteName={"Programs"}
-      tabBarOptions={{
-        inactiveTintColor: "black",
-        activeTintColor: "white",
-        labelStyle: { fontSize: 18 },
-        style: {
-          backgroundColor: "gray",
-        },
-        showIcon: true,
-        labelPosition: "beside-icon",
-      }}
+      tabBar={(props) => <MyTabBar {...{ ...props, sessionActive }} />}
     >
       <Tab.Screen
         key={"1"}
@@ -163,9 +250,6 @@ function NavTabs({}) {
 }
 
 function App() {
-  const [sessionActive, setSessionActive] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <SafeAreaProvider>
       <NavigationContainer>
