@@ -1,21 +1,27 @@
 import React from "react";
 import { Text, TouchableHighlight, View, StyleSheet } from "react-native";
-import BaseModal from "./BaseModal";
 
 export default function BaseCard({ data, onPress, style }) {
   return (
-    <View style={cardStyles.cardView}>
-      <TouchableHighlight style={cardStyles.cardButton} onPress={onPress}>
-        <Text style={style.textStyle}>{data.title}</Text>
+    <View style={{ ...styles.cardView, ...style.cardView }}>
+      <TouchableHighlight
+        style={{ ...styles.cardButton, ...style.cardButton }}
+        onPress={onPress}
+      >
+        <Text style={{ ...styles.textStyle, ...style.textStyle }}>
+          {data.title}
+        </Text>
       </TouchableHighlight>
     </View>
   );
 }
 
-const cardStyles = StyleSheet.create({
-  cardView: {},
-  cardButton: {
+const styles = StyleSheet.create({
+  cardView: {
     height: 150,
+  },
+  cardButton: {
+    height: "100%",
     backgroundColor: "#F194FF",
     borderRadius: 20,
     padding: 20,

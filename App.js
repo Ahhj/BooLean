@@ -1,13 +1,17 @@
 import "react-native-gesture-handler";
 import React, { useState } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, StatusBar, SafeAreaView } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import ProgramsScreen from "./src/views/ProgramsScreen";
 import SessionModal from "./src/views/SessionModal";
+import BaseCard from "./src/views/BaseCard";
 
 const Tab = createBottomTabNavigator();
+const WorkoutStack = createStackNavigator();
 
 function HomeScreen() {
   return (
@@ -17,12 +21,82 @@ function HomeScreen() {
   );
 }
 
-function NavTabs({
-  sessionActive,
-  setSessionActive,
-  modalVisible,
-  setModalVisible,
-}) {
+function WorkoutBanner() {
+  const navigation = useNavigation();
+  return (
+    <SafeAreaView>
+      <BaseCard
+        data={{}}
+        onPress={() => navigation.navigate("MyModal")}
+        style={{
+          ...styles,
+          cardView: { height: "95%", marginHorizontal: "2%" },
+        }}
+      />
+    </SafeAreaView>
+  );
+}
+
+function WorkoutStackScreen() {
+  const [sessionActive, setSessionActive] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  return (
+    <WorkoutStack.Navigator
+      {...{
+        headerMode: "none",
+        mode: "modal",
+        transparentCard: true,
+        cardStyle: { opacity: 1 },
+      }}
+    >
+      <WorkoutStack.Screen name="Home">
+        {() => (
+          <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
+            <StatusBar barStyle="dark-content" />
+
+            <View style={{ height: `${sessionActive ? 15 : 0}%` }}>
+              <WorkoutBanner />
+            </View>
+            <View style={{ flex: 1, height: `${sessionActive ? 85 : 0}%` }}>
+              <NavTabs />
+            </View>
+          </View>
+        )}
+      </WorkoutStack.Screen>
+      <WorkoutStack.Screen name="MyModal">
+        {() => {
+          const navigation = useNavigation();
+          return (
+            <View
+              style={{
+                flex: 1,
+                height: "90%",
+                width: "100%",
+                backgroundColor: "#fff",
+                justifyContent: "center",
+                position: "absolute",
+              }}
+            >
+              <StatusBar barStyle="dark-content" />
+              <SessionModal
+                active={sessionActive}
+                visible={modalVisible}
+                onStart={() => setSessionActive(true)}
+                onEdit={() => setSessionActive(true)}
+                onFinish={() => setSessionActive(false)}
+                onCancel={() => setSessionActive(false)}
+                onClose={() => navigation.goBack()}
+                style={styles}
+              />
+            </View>
+          );
+        }}
+      </WorkoutStack.Screen>
+    </WorkoutStack.Navigator>
+  );
+}
+
+function NavTabs({}) {
   return (
     <Tab.Navigator
       initialRouteName={"Programs"}
@@ -51,23 +125,7 @@ function NavTabs({
           tabBarIcon: () => <Text>{"🏋️‍♀️"}</Text>,
         }}
       >
-        {() => (
-          <ProgramsScreen
-            onPress={(item) => setModalVisible(true)}
-            style={styles}
-          >
-            <SessionModal
-              active={sessionActive}
-              visible={modalVisible}
-              onStart={() => setSessionActive(true)}
-              onEdit={() => setSessionActive(true)}
-              onFinish={() => setSessionActive(false)}
-              onCancel={() => setSessionActive(false)}
-              onClose={() => setModalVisible(false)}
-              style={styles}
-            />
-          </ProgramsScreen>
-        )}
+        {() => <ProgramsScreen onPress={() => {}} style={styles} />}
       </Tab.Screen>
       <Tab.Screen
         key={"3"}
@@ -87,11 +145,11 @@ function App() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <NavigationContainer>
-      <NavTabs
-        {...{ sessionActive, setSessionActive, modalVisible, setModalVisible }}
-      />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <WorkoutStackScreen />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
@@ -112,13 +170,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginTop: 20,
   },
   bottom: {
     flex: 1,
     alignItems: "flex-end",
     justifyContent: "flex-end",
-    marginBottom: 0,
   },
 });
 
