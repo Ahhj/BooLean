@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProgramsScreen from "./src/views/ProgramsScreen";
 import SessionModal from "./src/views/SessionModal";
 import BaseCard from "./src/views/BaseCard";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 const WorkoutStack = createStackNavigator();
@@ -103,9 +104,12 @@ function NavTabs({}) {
       tabBarOptions={{
         inactiveTintColor: "black",
         activeTintColor: "white",
-        labelStyle: { fontSize: 20 },
-        style: { backgroundColor: "gray" },
+        labelStyle: { fontSize: 18 },
+        style: {
+          backgroundColor: "gray",
+        },
         showIcon: true,
+        labelPosition: "beside-icon",
       }}
     >
       <Tab.Screen
@@ -114,7 +118,13 @@ function NavTabs({}) {
         component={HomeScreen}
         options={{
           title: "Dashboard",
-          tabBarIcon: () => <Text>{"📈"}</Text>,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={"chart-line"}
+              color={color}
+              size={size}
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -122,7 +132,13 @@ function NavTabs({}) {
         name={"Programs"}
         options={{
           title: "Programs",
-          tabBarIcon: () => <Text>{"🏋️‍♀️"}</Text>,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={"dumbbell"}
+              color={color}
+              size={size}
+            />
+          ),
         }}
       >
         {() => <ProgramsScreen onPress={() => {}} style={styles} />}
@@ -133,7 +149,13 @@ function NavTabs({}) {
         component={HomeScreen}
         options={{
           title: "History",
-          tabBarIcon: () => <Text>{"🕓"}</Text>,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={"history"}
+              color={color}
+              size={size}
+            />
+          ),
         }}
       />
     </Tab.Navigator>
