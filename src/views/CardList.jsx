@@ -1,13 +1,26 @@
 import React, { useCallback } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Text } from "react-native";
 import BaseCard from "./BaseCard";
 
-export default function CardList({ data, numColumns, style, onPress }) {
+export default function CardList({
+  data,
+  numColumns,
+  style,
+  onPress,
+  onLongPress,
+}) {
   const width = `${(100 - numColumns * 2) / numColumns}%`;
   const renderItem = useCallback(({ item }) => {
     return (
       <View style={{ ...styles.item, width }}>
-        <BaseCard data={item} onPress={() => onPress(item)} style={style} />
+        <BaseCard
+          data={item}
+          onPress={() => onPress(item)}
+          onLongPress={() => onLongPress(item)}
+          style={style}
+        >
+          <Text style={{ ...style.textStyle }}>{data.title}</Text>
+        </BaseCard>
       </View>
     );
   }, []);

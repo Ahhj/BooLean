@@ -5,7 +5,7 @@ import CardList from "./CardList";
 
 export default function ProgramsScreen({ children, style }) {
   const navigation = useNavigation();
-  const onPress = () => navigation.navigate("MyModal");
+  const onLongPress = () => navigation.navigate("MyModal");
   const data = [
     { id: 1, title: "Hello world!" },
     { id: 2, title: "Goodbye world!" },
@@ -14,7 +14,12 @@ export default function ProgramsScreen({ children, style }) {
   return (
     <SafeAreaView style={[style.container]}>
       <View style={{ height: "100%" }}>
-        <CardList onPress={onPress} data={data} numColumns={1} style={style} />
+        <CardList
+          onLongPress={onLongPress}
+          data={data}
+          numColumns={1}
+          style={style}
+        />
       </View>
       {children}
     </SafeAreaView>

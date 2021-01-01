@@ -1,16 +1,20 @@
 import React from "react";
-import { Text, TouchableHighlight, View, StyleSheet } from "react-native";
+import { TouchableHighlight, View, StyleSheet } from "react-native";
+import * as Haptics from "expo-haptics";
 
-export default function BaseCard({ data, onPress, style }) {
+export default function BaseCard({ onPress, onLongPress, style, children }) {
   return (
     <View style={{ ...styles.cardView, ...style.cardView }}>
       <TouchableHighlight
         style={{ ...styles.cardButton, ...style.cardButton }}
         onPress={onPress}
+        onLongPress={() =>
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).then(
+            onLongPress
+          )
+        }
       >
-        <Text style={{ ...styles.textStyle, ...style.textStyle }}>
-          {data.title}
-        </Text>
+        {children}
       </TouchableHighlight>
     </View>
   );

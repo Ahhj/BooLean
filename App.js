@@ -127,15 +127,15 @@ function WorkoutBanner({ navigation, data }) {
   return (
     <SafeAreaView>
       <BaseCard
-        data={data}
         onPress={() => navigation.navigate("MyModal")}
         style={{
           ...styles,
           cardView: { height: 80 },
           cardButton: { borderRadius: 0, backgroundColor: "white" },
-          textStyle: { color: "black" },
         }}
-      />
+      >
+        <Text style={{ color: "black" }}>{data.title}</Text>
+      </BaseCard>
     </SafeAreaView>
   );
 }
