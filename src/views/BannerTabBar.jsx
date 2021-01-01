@@ -5,17 +5,18 @@ export default function BannerTabBar({
   state,
   descriptors,
   navigation,
-  Banner,
+  renderBanner,
 }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
   if (focusedOptions.tabBarVisible === false) {
     return null;
   }
+  const Banner = renderBanner({ navigation });
 
   return (
     <View>
-      {Banner ? <Banner navigation={navigation} /> : null}
+      {Banner ? <Banner /> : null}
       <View
         style={{ flexDirection: "row", height: 80, backgroundColor: "gray" }}
       >

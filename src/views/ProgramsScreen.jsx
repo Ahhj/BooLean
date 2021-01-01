@@ -5,7 +5,7 @@ import TouchableCardList from "./TouchableCardList";
 
 export default function ProgramsScreen({ children, style }) {
   const navigation = useNavigation();
-  const onLongPress = () => navigation.navigate("MyModal");
+  const onLongPress = () => navigation.navigate("SessionModal");
   const data = [
     { id: 1, title: "Hello world!" },
     { id: 2, title: "Goodbye world!" },
