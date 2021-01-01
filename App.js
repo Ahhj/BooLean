@@ -15,7 +15,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import ProgramsScreen from "./src/views/ProgramsScreen";
 import SessionModal from "./src/views/SessionModal";
-import BaseCard from "./src/views/BaseCard";
+import TouchableCard from "./src/views/TouchableCard";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
@@ -126,7 +126,7 @@ function HomeScreen() {
 function WorkoutBanner({ navigation, data }) {
   return (
     <SafeAreaView>
-      <BaseCard
+      <TouchableCard
         onPress={() => navigation.navigate("MyModal")}
         style={{
           ...styles,
@@ -135,7 +135,7 @@ function WorkoutBanner({ navigation, data }) {
         }}
       >
         <Text style={{ color: "black" }}>{data.title}</Text>
-      </BaseCard>
+      </TouchableCard>
     </SafeAreaView>
   );
 }

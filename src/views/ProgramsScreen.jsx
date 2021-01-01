@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import CardList from "./CardList";
+import TouchableCardList from "./TouchableCardList";
 
 export default function ProgramsScreen({ children, style }) {
   const navigation = useNavigation();
@@ -9,12 +9,11 @@ export default function ProgramsScreen({ children, style }) {
   const data = [
     { id: 1, title: "Hello world!" },
     { id: 2, title: "Goodbye world!" },
-    { id: 3, title: "Poopy plop!" },
   ];
   return (
     <SafeAreaView style={[style.container]}>
       <View style={{ height: "100%" }}>
-        <CardList
+        <TouchableCardList
           onLongPress={onLongPress}
           data={data}
           numColumns={1}

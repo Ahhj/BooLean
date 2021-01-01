@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { FlatList, StyleSheet, View, Text } from "react-native";
-import BaseCard from "./BaseCard";
+import TouchableCard from "./TouchableCard";
 
-export default function CardList({
+export default function TouchableCardList({
   data,
   numColumns,
   style,
@@ -13,14 +13,9 @@ export default function CardList({
   const renderItem = useCallback(({ item }) => {
     return (
       <View style={{ ...styles.item, width }}>
-        <BaseCard
-          data={item}
-          onPress={() => onPress(item)}
-          onLongPress={() => onLongPress(item)}
-          style={style}
-        >
-          <Text style={{ ...style.textStyle }}>{data.title}</Text>
-        </BaseCard>
+        <TouchableCard {...{ style, onPress, onLongPress }}>
+          <Text style={{ ...style.textStyle }}>{item.title}</Text>
+        </TouchableCard>
       </View>
     );
   }, []);
