@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, SafeAreaView } from "react-native";
-
 import TouchableCard from "./TouchableCard";
 
 export default function SessionBanner({ sessionState, onPress, style }) {

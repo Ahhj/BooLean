@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, TouchableHighlight, StyleSheet } from "react-native";
+import { View, Text, TouchableHighlight, StyleSheet } from "react-native";
 
-export default function Button({ type, text, onPress, style }) {
+export default function Button({ type, text, Icon, onPress, style }) {
   var buttonStyle = { ...styles.buttonStyle, ...style.buttonStyle };
   buttonStyle = (() => {
     switch (type) {
@@ -18,7 +18,18 @@ export default function Button({ type, text, onPress, style }) {
 
   return (
     <TouchableHighlight style={buttonStyle} onPress={onPress}>
-      <Text style={{ ...styles.textStyle, ...style.textStyle }}>{text}</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {Icon ? (
+          <Icon size={styles.iconSize} color={styles.iconStyle.color} />
+        ) : null}
+        <Text style={{ ...styles.textStyle, ...style.textStyle }}>{text}</Text>
+      </View>
     </TouchableHighlight>
   );
 }
@@ -47,4 +58,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
   },
+  iconSize: 30,
+  iconStyle: { color: "white" },
 });

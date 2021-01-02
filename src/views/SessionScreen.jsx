@@ -1,6 +1,7 @@
 import React from "react";
 import { View, SafeAreaView } from "react-native";
 import Button from "./Button";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function SessionScreen({
   active,
@@ -31,6 +32,13 @@ export default function SessionScreen({
         <Button
           type={!active ? "secondary" : "reject"}
           text={!active ? "Edit" : "Cancel"}
+          Icon={({ color }) => (
+            <MaterialCommunityIcons
+              name={!active ? "square-edit-outline" : "cancel"}
+              color={color}
+              size={20}
+            />
+          )}
           onPress={!active ? onEdit : onCancel}
           style={{
             buttonStyle: {
@@ -41,6 +49,13 @@ export default function SessionScreen({
         <Button
           type="secondary"
           text="Close"
+          Icon={({ color }) => (
+            <MaterialCommunityIcons
+              name={"close-thick"}
+              color={color}
+              size={20}
+            />
+          )}
           onPress={onClose}
           style={{
             buttonStyle: {
@@ -53,6 +68,13 @@ export default function SessionScreen({
         <Button
           type={!active ? "primary" : "accept"}
           text={!active ? "Start" : "Finish"}
+          Icon={({ color }) => (
+            <MaterialCommunityIcons
+              name={!active ? "arrow-right-drop-circle" : "flag"}
+              color={color}
+              size={20}
+            />
+          )}
           onPress={!active ? onStart : onFinish}
           style={{
             buttonStyle: {
