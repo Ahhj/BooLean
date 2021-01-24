@@ -10,15 +10,24 @@ export default function TouchableCardList({
   onLongPress,
 }) {
   const width = `${(100 - numColumns * 2) / numColumns}%`;
-  const renderItem = useCallback(({ item }) => {
-    return (
-      <View style={{ ...styles.item, width }}>
-        <TouchableCard {...{ style, onPress, onLongPress }}>
-          <Text style={{ ...style.textStyle }}>{item.title}</Text>
-        </TouchableCard>
-      </View>
-    );
-  }, []);
+  const renderItem = useCallback(
+    ({ item }) => {
+      return (
+        <View style={{ ...styles.item, width }}>
+          <TouchableCard {...{ style, onPress, onLongPress }}>
+            <Text
+              style={{
+                ...(style ? (style.textStyle ? style.textStyle : {}) : {}),
+              }}
+            >
+              {item.title}
+            </Text>
+          </TouchableCard>
+        </View>
+      );
+    },
+    [style, styles, onPress, onLongPress]
+  );
 
   return (
     <FlatList

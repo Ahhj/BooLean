@@ -9,9 +9,17 @@ export default function TouchableCard({
   children,
 }) {
   return (
-    <View style={{ ...styles.cardView, ...style.cardView }}>
+    <View
+      style={{
+        ...styles.cardView,
+        ...(style ? (style.cardView ? style.cardView : {}) : {}),
+      }}
+    >
       <TouchableHighlight
-        style={{ ...styles.cardButton, ...style.cardButton }}
+        style={{
+          ...styles.cardButton,
+          ...(style ? (style.cardButton ? style.cardButton : {}) : {}),
+        }}
         onPress={onPress}
         onLongPress={
           onLongPress

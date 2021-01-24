@@ -30,12 +30,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   top: {
-    flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
   },
   bottom: {
-    flex: 1,
     alignItems: "flex-end",
     justifyContent: "flex-end",
   },
