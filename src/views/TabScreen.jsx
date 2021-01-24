@@ -7,6 +7,15 @@ import ProgramsScreen from "./ProgramsScreen";
 
 const TabNavigator = createBottomTabNavigator();
 
+/**
+ * Access to inner-most level of navigation. Renders a navigator
+ * allowing navigation between the screens in the application
+ * unrelated to sessions.
+ *
+ * The tab-bar is customized to allow
+ * room for a banner component to display for quick navigation
+ * to screens not accessible through the tabs.
+ */
 export default function TabScreen({ renderBanner, style }) {
   return (
     <TabNavigator.Navigator

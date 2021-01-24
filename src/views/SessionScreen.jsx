@@ -5,6 +5,10 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import ExerciseList from "./ExerciseList";
 
+/**
+ * Renders a screen for the user to interact with sessions
+ * (e.g. start/stop/edit/etc)
+ */
 export default function SessionScreen({
   active,
   style,

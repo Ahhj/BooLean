@@ -1,6 +1,10 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 
+/**
+ * Customized tab bar that makes space for a pressable banner to display
+ * above it.
+ */
 export default function BannerTabBar({
   state,
   descriptors,

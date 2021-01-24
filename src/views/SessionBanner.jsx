@@ -2,6 +2,10 @@ import React from "react";
 import { Text, SafeAreaView } from "react-native";
 import TouchableCard from "./TouchableCard";
 
+/**
+ * Component to be rendered above the tab bar when a session is active
+ * for quick-look and navigation.
+ */
 export default function SessionBanner({ sessionState, onPress, style }) {
   return (
     <SafeAreaView>

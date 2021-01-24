@@ -9,6 +9,13 @@ import TabScreen from "./TabScreen";
 
 const StackNavigator = createStackNavigator();
 
+/**
+ * Access to outer-most level of navigation. Renders a navigator
+ * with 2 screens:
+ *   - Home enables navigation around the app via a tab bar
+ *   - SessionScreenModal is a full screen modal for the user to interact
+ *     with sessions.
+ */
 export default function StackScreen({ style }) {
   const [sessionActive, setSessionActive] = useState(true);
 
