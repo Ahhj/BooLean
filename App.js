@@ -4,13 +4,13 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import SessionStackScreen from "./src/views/SessionStackScreen";
+import StackScreen from "./src/views/StackScreen";
 
 function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <SessionStackScreen style={styles} />
+        <StackScreen style={styles} />
       </NavigationContainer>
     </SafeAreaProvider>
   );

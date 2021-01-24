@@ -15,6 +15,8 @@ export default function ExerciseList() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItemIndex, setModalItemIndex] = useState(0);
 
+  // TODO: on drag end should change order
+
   const renderItem = ({ item, index, drag, isActive }) => {
     return (
       <View>

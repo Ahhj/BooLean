@@ -7,7 +7,6 @@ import ExerciseList from "./ExerciseList";
 
 export default function SessionScreen({
   active,
-  visible,
   style,
   onStart,
   onEdit,

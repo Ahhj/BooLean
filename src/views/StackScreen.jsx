@@ -7,10 +7,9 @@ import SessionScreen from "./SessionScreen";
 import SessionBanner from "./SessionBanner";
 import TabScreen from "./TabScreen";
 
-const SessionStackNavigator = createStackNavigator();
+const StackNavigator = createStackNavigator();
 
-export default function SessionStackScreen({ style }) {
-  const [modalVisible, setModalVisible] = useState(false);
+export default function StackScreen({ style }) {
   const [sessionActive, setSessionActive] = useState(true);
 
   const sessionState = { active: sessionActive };
@@ -21,7 +20,7 @@ export default function SessionStackScreen({ style }) {
             <SessionBanner
               {...{
                 sessionState,
-                onPress: () => navigation.navigate("SessionModal"),
+                onPress: () => navigation.navigate("SessionScreenModal"),
                 style,
               }}
             />
@@ -32,7 +31,7 @@ export default function SessionStackScreen({ style }) {
   );
 
   return (
-    <SessionStackNavigator.Navigator
+    <StackNavigator.Navigator
       {...{
         headerMode: "none",
         mode: "modal",
@@ -40,15 +39,15 @@ export default function SessionStackScreen({ style }) {
         cardStyle: { opacity: 1 },
       }}
     >
-      <SessionStackNavigator.Screen name="Home">
+      <StackNavigator.Screen name="Home">
         {() => (
           <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
             <StatusBar barStyle="dark-content" />
             <TabScreen {...{ renderBanner, style }} />
           </View>
         )}
-      </SessionStackNavigator.Screen>
-      <SessionStackNavigator.Screen name="SessionModal">
+      </StackNavigator.Screen>
+      <StackNavigator.Screen name="SessionScreenModal">
         {() => {
           const navigation = useNavigation();
           return (
@@ -65,7 +64,6 @@ export default function SessionStackScreen({ style }) {
               <StatusBar barStyle="dark-content" />
               <SessionScreen
                 active={sessionActive}
-                visible={modalVisible}
                 onStart={() => setSessionActive(true)}
                 onEdit={() => setSessionActive(true)}
                 onFinish={() => setSessionActive(false)}
@@ -76,7 +74,7 @@ export default function SessionStackScreen({ style }) {
             </View>
           );
         }}
-      </SessionStackNavigator.Screen>
-    </SessionStackNavigator.Navigator>
+      </StackNavigator.Screen>
+    </StackNavigator.Navigator>
   );
 }
