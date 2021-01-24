@@ -5,10 +5,10 @@ Written in react-native and tested for iOS.
 
 ## Welcome
 
-First off: yes, I know there are too many workout logging apps already out there! 
+First off: yes, I know, there are too many workout logging apps already out there! 
 
 However, they generally suffer from at least one of the following issues:
-- They are filled with adds or require expensive ongoing subscriptions to unlock basic functionality
+- They are filled with ads or require expensive ongoing subscriptions to unlock basic functionality
 - They are restrictive in the programming offered, usually confining the user to choose a preset routine rather than creating their own
 - They are updated infrequently and since code is proprietry there is no way for users to take development into their own hands
 
