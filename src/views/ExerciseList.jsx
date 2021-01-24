@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import { View } from "react-native";
-
-import { TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";
 
 export default function ExerciseList() {
-  const data = ["Squat", "Bench Press", "Deadlift"].map((d, index) => ({
-    key: `item-${index}`, // For example only -- don't use index as your key!
-    label: d,
-    backgroundColor: "gray",
-  }));
+  const [data, setData] = useState(
+    ["Squat", "Bench Press", "Deadlift"].map((d, index) => ({
+      key: `item-${index}`, // For example only -- don't use index as your key!
+      label: d,
+      backgroundColor: "gray",
+    }))
+  );
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalItemIndex, setModalItemIndex] = useState(0);
-
-  // TODO: on drag end should change order
 
   const renderItem = ({ item, index, drag, isActive }) => {
     return (
@@ -68,6 +66,7 @@ export default function ExerciseList() {
         renderItem={renderItem}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         style={{}}
+        onDragEnd={({ data }) => setData(data)}
       />
     </View>
   );
