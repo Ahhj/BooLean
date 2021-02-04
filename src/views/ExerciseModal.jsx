@@ -1,10 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { View, Text } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import ModalView from "./ModalView";
 import TouchableCardList from "./TouchableCardList";
 import PickerTableView from "./PickerTableView";
 import Button from "./Button";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useSessionData } from "../providers/SessionDataProvider";
 
 export default function ExerciseModal({ title, visible, onClose, style }) {
   const renderCloseButton = useCallback(
@@ -42,42 +44,21 @@ export default function ExerciseModal({ title, visible, onClose, style }) {
 
   // TODO: when card is pressed, set the current set
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
-
-  const setData = {
-    0: [
-      {
-        headerText: "Reps",
-        selectedValue: 2,
-        values: [1, 2, 3],
-        onValueChange: (itemValue, itemIndex) => {},
-      },
-      {
-        headerText: "RPE",
-        selectedValue: 2,
-        values: [1, 2, 3],
-        onValueChange: (itemValue, itemIndex) => {},
-      },
-      {
-        headerText: "Weight",
-        selectedValue: 2,
-        values: [1, 2, 3],
-        onValueChange: (itemValue, itemIndex) => {},
-      },
-    ],
-  };
+  //   const sessionData = useSessionData();
 
   return (
     <ModalView
       visible={visible}
       style={{
         modalView: {
-          height: "70%",
+          height: "90%",
           shadowOffset: {
             width: 0,
             height: 0,
           },
           shadowOpacity: 1,
           shadowRadius: 200,
+          paddingBottom: "10%",
         },
       }}
     >
@@ -106,7 +87,6 @@ export default function ExerciseModal({ title, visible, onClose, style }) {
           style={{ cardView: { height: 60 } }}
         />
       </View>
-      <PickerTableView columnData={setData[currentSetIndex]} />
     </ModalView>
   );
 }

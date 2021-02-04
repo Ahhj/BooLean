@@ -4,6 +4,7 @@ import Button from "./Button";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ExerciseList from "./ExerciseList";
+import SessionDataProvider from "../providers/SessionDataProvider";
 
 /**
  * Renders a screen for the user to interact with sessions
@@ -114,7 +115,9 @@ export default function SessionScreen({
           marginBottom: "2%",
         }}
       >
-        <ExerciseList />
+        <SessionDataProvider>
+          <ExerciseList />
+        </SessionDataProvider>
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
         {renderActivityDependentButton(finishButtonProps, startButtonProps, {

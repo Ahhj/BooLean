@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";
+import { useSessionData } from "../providers/SessionDataProvider";
 
 export default function ExerciseList() {
+  const sessionData = useSessionData();
+
   const [data, setData] = useState(
-    ["Squat", "Bench Press", "Deadlift"].map((d, index) => ({
+    sessionData.exercises.map((d, index) => ({
       key: `item-${index}`, // For example only -- don't use index as your key!
       label: d,
       backgroundColor: "gray",
