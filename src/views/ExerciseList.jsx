@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";
@@ -7,16 +7,22 @@ import { useSessionData } from "../providers/SessionDataProvider";
 export default function ExerciseList() {
   const sessionData = useSessionData();
 
-  const [data, setData] = useState(
-    sessionData.exercises.map((d, index) => ({
-      key: `item-${index}`, // For example only -- don't use index as your key!
-      label: d,
-      backgroundColor: "gray",
-    }))
-  );
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      setData(
+        sessionData.exercises.map((d, index) => ({
+          key: `item-${index}`, // For example only -- don't use index as your key!
+          label: d,
+          backgroundColor: "gray",
+        }))
+      );
+    })();
+  }, [sessionData]);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalItemIndex, setModalItemIndex] = useState(0);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   const renderItem = ({ item, index, drag, isActive }) => {
     return (
@@ -33,7 +39,7 @@ export default function ExerciseList() {
           }}
           onPress={() => {
             setModalVisible(true);
-            setModalItemIndex(index);
+            setSelectedItemIndex(index);
           }}
           onLongPress={drag}
         >
@@ -60,7 +66,7 @@ export default function ExerciseList() {
       }}
     >
       <ExerciseModal
-        title={data[modalItemIndex].label}
+        title={data.length ? data[selectedItemIndex].label : null}
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
       />

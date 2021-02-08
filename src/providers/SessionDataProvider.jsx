@@ -16,8 +16,18 @@ export const useSessionData = () => {
 
 /** Responsible for maintaining session state
  */
-export default function SessionDataProvider({ sessionId, children }) {
-  const [state, setState] = useState({ loaded: false, sessionId });
+export default function SessionDataProvider({
+  sessionId,
+  sessionName,
+  children,
+}) {
+  const [state, setState] = useState({
+    sessionId,
+    sessionName,
+    exercises: [],
+    loaded: false,
+  });
+  // TODO: allow update of context state by children
 
   useEffect(() => {
     (async () => {
