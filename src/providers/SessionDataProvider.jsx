@@ -1,4 +1,10 @@
-import React, { useState, createContext, useContext, useEffect } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+} from "react";
 
 const Context = createContext(null);
 
@@ -15,6 +21,7 @@ export const useSessionData = () => {
 };
 
 /** Responsible for maintaining session state
+ * TODO: rename to WorkoutProvider (session is confusing)
  */
 export default function SessionDataProvider({
   sessionId,
@@ -54,11 +61,35 @@ export default function SessionDataProvider({
         ],
       };
 
-      const exercises = ["Squat", "Bench Press", "Deadlift", "Something Else"];
+      const exercises = [
+        {
+          key: "exercise-1",
+          label: "Squat",
+        },
+        {
+          key: "exercise-2",
+          label: "Bench press",
+        },
+        {
+          key: "exercise-3",
+          label: "Deadlift",
+        },
+      ];
 
-      setState({ ...state, data, exercises, loaded: true });
+      setState({ ...state, data, exercises, setExercises, loaded: true });
     })();
   }, []);
 
-  return <Context.Provider value={state}>{children}</Context.Provider>;
+  const setExercises = useCallback(
+    (updated) => {
+      setState({ ...state, exercises: updated });
+    },
+    [state, setState]
+  );
+
+  return (
+    <Context.Provider value={{ data: state, setExercises }}>
+      {children}
+    </Context.Provider>
+  );
 }

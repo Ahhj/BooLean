@@ -5,21 +5,7 @@ import ExerciseModal from "./ExerciseModal";
 import { useSessionData } from "../providers/SessionDataProvider";
 
 export default function ExerciseList() {
-  const sessionData = useSessionData();
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      setData(
-        sessionData.exercises.map((d, index) => ({
-          key: `item-${index}`, // For example only -- don't use index as your key!
-          label: d,
-          backgroundColor: "gray",
-        }))
-      );
-    })();
-  }, [sessionData]);
+  const { data, setExercises } = useSessionData();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -66,16 +52,23 @@ export default function ExerciseList() {
       }}
     >
       <ExerciseModal
-        title={data.length ? data[selectedItemIndex].label : null}
+        title={
+          data.exercises.length ? data.exercises[selectedItemIndex].label : null
+        }
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
       />
       <DraggableFlatList
-        data={data}
+        data={data.exercises.map((item, index) => {
+          return {
+            ...item,
+            backgroundColor: "gray",
+          };
+        })}
         renderItem={renderItem}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         style={{}}
-        onDragEnd={({ data }) => setData(data)}
+        onDragEnd={(updated) => setExercises(updated.data)}
       />
     </View>
   );
