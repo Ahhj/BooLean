@@ -6,7 +6,7 @@ import ModalView from "./ModalView";
 import TouchableCardList from "./TouchableCardList";
 import PickerTableView from "./PickerTableView";
 import Button from "./Button";
-import { useSessionData } from "../providers/SessionDataProvider";
+import { useWorkoutContext } from "../providers/WorkoutContextProvider";
 
 export default function ExerciseModal({ title, visible, onClose, style }) {
   const renderCloseButton = useCallback(
@@ -44,7 +44,7 @@ export default function ExerciseModal({ title, visible, onClose, style }) {
 
   // TODO: when card is pressed, set the current set
   const [currentSetIndex, setCurrentSetIndex] = useState(0);
-  //   const sessionData = useSessionData();
+  //   const sessionData = useWorkoutContext();
 
   return (
     <ModalView

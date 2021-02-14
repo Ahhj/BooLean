@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";
-import { useSessionData } from "../providers/SessionDataProvider";
+import { useWorkoutContext } from "../providers/WorkoutContextProvider";
 
 export default function ExerciseList() {
-  const { data, setExercises } = useSessionData();
+  const workoutContext = useWorkoutContext();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
@@ -53,13 +53,15 @@ export default function ExerciseList() {
     >
       <ExerciseModal
         title={
-          data.exercises.length ? data.exercises[selectedItemIndex].label : null
+          workoutContext.exercises.length
+            ? workoutContext.exercises[selectedItemIndex].label
+            : null
         }
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
       />
       <DraggableFlatList
-        data={data.exercises.map((item, index) => {
+        data={workoutContext.exercises.map((item, index) => {
           return {
             ...item,
             backgroundColor: "gray",
@@ -68,7 +70,7 @@ export default function ExerciseList() {
         renderItem={renderItem}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         style={{}}
-        onDragEnd={(updated) => setExercises(updated.data)}
+        onDragEnd={(updated) => workoutContext.setExercises(updated.data)}
       />
     </View>
   );

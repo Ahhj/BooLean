@@ -10,20 +10,19 @@ const Context = createContext(null);
 
 /* Session data hook
  */
-export const useSessionData = () => {
+export const useWorkoutContext = () => {
   const contextState = useContext(Context);
   if (contextState === null) {
     throw new Error(
-      "useSessionData must be used within SessionDataProvider tag"
+      "useWorkoutContext must be used within WorkoutContextProvider tag"
     );
   }
   return contextState;
 };
 
 /** Responsible for maintaining session state
- * TODO: rename to WorkoutProvider (session is confusing)
  */
-export default function SessionDataProvider({
+export default function WorkoutContextProvider({
   sessionId,
   sessionName,
   children,
@@ -34,7 +33,6 @@ export default function SessionDataProvider({
     exercises: [],
     loaded: false,
   });
-  // TODO: allow update of context state by children
 
   useEffect(() => {
     (async () => {
@@ -80,6 +78,7 @@ export default function SessionDataProvider({
     })();
   }, []);
 
+  // Used by children to update the exercises
   const setExercises = useCallback(
     (updated) => {
       setState({ ...state, exercises: updated });
@@ -88,7 +87,7 @@ export default function SessionDataProvider({
   );
 
   return (
-    <Context.Provider value={{ data: state, setExercises }}>
+    <Context.Provider value={{ ...state, setExercises }}>
       {children}
     </Context.Provider>
   );
