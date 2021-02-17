@@ -4,14 +4,13 @@ import Button from "./Button";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ExerciseList from "./ExerciseList";
-import WorkoutContextProvider from "../providers/WorkoutContextProvider";
+import { useWorkoutContext } from "../providers/WorkoutContextProvider";
 
 /**
  * Renders a screen for the user to interact with sessions
  * (e.g. start/stop/edit/etc)
  */
 export default function SessionScreen({
-  active,
   style,
   onStart,
   onEdit,
@@ -19,6 +18,8 @@ export default function SessionScreen({
   onCancel,
   onClose,
 }) {
+  const workoutContext = useWorkoutContext();
+
   const editButtonProps = {
     text: "Edit",
     type: "secondary",
@@ -49,7 +50,9 @@ export default function SessionScreen({
 
   const renderActivityDependentButton = useCallback(
     (activeProps, inactiveProps, buttonStyle) => {
-      const { iconName, ...buttonProps } = active ? activeProps : inactiveProps;
+      const { iconName, ...buttonProps } = workoutContext.active
+        ? activeProps
+        : inactiveProps;
       return (
         <Button
           {...buttonProps}
@@ -60,7 +63,7 @@ export default function SessionScreen({
         />
       );
     },
-    [active]
+    [workoutContext]
   );
 
   const renderCloseButton = useCallback(
@@ -115,9 +118,7 @@ export default function SessionScreen({
           marginBottom: "2%",
         }}
       >
-        <WorkoutContextProvider>
-          <ExerciseList />
-        </WorkoutContextProvider>
+        <ExerciseList />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
         {renderActivityDependentButton(finishButtonProps, startButtonProps, {

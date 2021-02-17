@@ -17,11 +17,12 @@ export default function ExerciseList() {
           style={{
             height: 100,
             backgroundColor: isActive ? "blue" : item.backgroundColor,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "top",
+            justifyContent: "left",
             flexDirection: "row",
             borderWidth: 1,
             margin: "1%",
+            padding: 10,
           }}
           onPress={() => {
             setModalVisible(true);
@@ -70,7 +71,7 @@ export default function ExerciseList() {
         renderItem={renderItem}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         style={{}}
-        onDragEnd={(updated) => workoutContext.setExercises(updated.data)}
+        onDragEnd={(updated) => workoutContext.updateExercises(updated.data)}
       />
     </View>
   );

@@ -5,12 +5,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import StackScreen from "./src/views/StackScreen";
+import WorkoutContextProvider from "./src/providers/WorkoutContextProvider";
 
 function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <StackScreen style={styles} />
+        <WorkoutContextProvider>
+          <StackScreen style={styles} />
+        </WorkoutContextProvider>
       </NavigationContainer>
     </SafeAreaProvider>
   );

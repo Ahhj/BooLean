@@ -7,6 +7,8 @@ import SessionScreen from "./SessionScreen";
 import SessionBanner from "./SessionBanner";
 import TabScreen from "./TabScreen";
 
+import { useWorkoutContext } from "../providers/WorkoutContextProvider";
+
 const StackNavigator = createStackNavigator();
 
 /**
@@ -17,24 +19,21 @@ const StackNavigator = createStackNavigator();
  *     with sessions.
  */
 export default function StackScreen({ style }) {
-  const [sessionActive, setSessionActive] = useState(true);
+  const workoutContext = useWorkoutContext();
 
-  const sessionState = { active: sessionActive };
   const renderBanner = useCallback(
-    ({ navigation }) => {
-      return sessionState.active
+    (props) => {
+      const navigation = useNavigation();
+      return workoutContext.active
         ? () => (
             <SessionBanner
-              {...{
-                sessionState,
-                onPress: () => navigation.navigate("SessionScreenModal"),
-                style,
-              }}
+              onPress={() => navigation.navigate("SessionScreenModal")}
+              {...style}
             />
           )
         : null;
     },
-    [sessionState]
+    [workoutContext]
   );
 
   return (
@@ -57,6 +56,11 @@ export default function StackScreen({ style }) {
       <StackNavigator.Screen name="SessionScreenModal">
         {() => {
           const navigation = useNavigation();
+          const onStart = () => workoutContext.toggleActive();
+          const onEdit = () => workoutContext.toggleActive();
+          const onFinish = () => workoutContext.toggleActive();
+          const onCancel = () => workoutContext.toggleActive();
+          const onClose = () => navigation.goBack();
           return (
             <View
               style={{
@@ -70,12 +74,11 @@ export default function StackScreen({ style }) {
             >
               <StatusBar barStyle="dark-content" />
               <SessionScreen
-                active={sessionActive}
-                onStart={() => setSessionActive(true)}
-                onEdit={() => setSessionActive(true)}
-                onFinish={() => setSessionActive(false)}
-                onCancel={() => setSessionActive(false)}
-                onClose={() => navigation.goBack()}
+                onStart={onStart}
+                onEdit={onEdit}
+                onFinish={onFinish}
+                onCancel={onCancel}
+                onClose={onClose}
                 style={style}
               />
             </View>

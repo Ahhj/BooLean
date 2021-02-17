@@ -32,6 +32,7 @@ export default function WorkoutContextProvider({
     sessionName,
     exercises: [],
     loaded: false,
+    active: false,
   });
 
   useEffect(() => {
@@ -74,20 +75,24 @@ export default function WorkoutContextProvider({
         },
       ];
 
-      setState({ ...state, data, exercises, setExercises, loaded: true });
+      setState({ ...state, data, exercises, updateExercises, loaded: true });
     })();
   }, []);
 
   // Used by children to update the exercises
-  const setExercises = useCallback(
+  const updateExercises = useCallback(
     (updated) => {
       setState({ ...state, exercises: updated });
     },
     [state, setState]
   );
 
+  const toggleActive = useCallback(() => {
+    setState({ ...state, active: !state.active });
+  }, [state, setState]);
+
   return (
-    <Context.Provider value={{ ...state, setExercises }}>
+    <Context.Provider value={{ ...state, updateExercises, toggleActive }}>
       {children}
     </Context.Provider>
   );
