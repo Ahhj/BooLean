@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BannerTabBar from "./BannerTabBar";
-import ProgramsScreen from "./ProgramsScreen";
+import ProgramScreen from "./ProgramScreen";
 
 const TabNavigator = createBottomTabNavigator();
 
@@ -58,7 +58,7 @@ export default function TabScreen({ renderBanner, style }) {
           ),
         }}
       >
-        {() => <ProgramsScreen onPress={() => {}} style={style} />}
+        {() => <ProgramScreen onPress={() => {}} style={style} />}
       </TabNavigator.Screen>
       <TabNavigator.Screen
         key={"3"}

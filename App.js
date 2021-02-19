@@ -4,16 +4,13 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import StackScreen from "./src/views/StackScreen";
-import WorkoutContextProvider from "./src/providers/WorkoutContextProvider";
+import StackScreen from "./src/screens/StackScreen";
 
 function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <WorkoutContextProvider>
-          <StackScreen style={styles} />
-        </WorkoutContextProvider>
+        <StackScreen style={styles} />
       </NavigationContainer>
     </SafeAreaProvider>
   );

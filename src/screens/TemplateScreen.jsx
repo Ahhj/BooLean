@@ -1,24 +1,28 @@
 import React, { useCallback, useState } from "react";
 import { View, SafeAreaView } from "react-native";
-import Button from "./Button";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import ExerciseList from "./ExerciseList";
+import Button from "../components/Button";
+import ExerciseList from "../components/ExerciseList";
 import { useWorkoutContext } from "../providers/WorkoutContextProvider";
+import { useNavigation } from "@react-navigation/native";
 
 /**
  * Renders a screen for the user to interact with sessions
  * (e.g. start/stop/edit/etc)
  */
-export default function SessionScreen({
-  style,
-  onStart,
-  onEdit,
-  onFinish,
-  onCancel,
-  onClose,
-}) {
+export default function TemplateScreen({ style }) {
   const workoutContext = useWorkoutContext();
+
+  const navigation = useNavigation();
+  const onStart = () => {
+    workoutContext.toggleActive();
+    navigation.navigate("WorkoutScreen");
+  };
+  const onEdit = () => workoutContext.toggleActive();
+  const onFinish = () => workoutContext.toggleActive();
+  const onCancel = () => workoutContext.toggleActive();
+  const onClose = () => navigation.goBack();
 
   const editButtonProps = {
     text: "Edit",
