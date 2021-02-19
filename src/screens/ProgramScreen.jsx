@@ -1,14 +1,16 @@
 import React from "react";
 import { SafeAreaView, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import TouchableCardList from "../components/TouchableCardList";
 
-export default function ProgramScreen({ children, style }) {
-  const navigation = useNavigation();
-  const onLongPress = () => navigation.navigate("TemplateScreen");
+export default function ProgramScreen({
+  onPress,
+  onLongPress,
+  children,
+  style,
+}) {
   const data = [
-    { id: 1, title: "Hello world!" },
-    { id: 2, title: "Goodbye world!" },
+    { id: 1, title: "Hello world!", templateId: 1 },
+    { id: 2, title: "Goodbye world!", templateId: 2 },
   ];
   return (
     <SafeAreaView style={[style.container]}>

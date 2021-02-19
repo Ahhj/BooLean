@@ -58,26 +58,37 @@ export default function StackScreen({ style }) {
       }}
     >
       <StackNavigator.Screen name="ProgramScreen">
-        {() => (
-          <WorkoutContextProvider>
+        {({ navigation }) => {
+          const onPress = ({ templateId }) => {};
+          const onLongPress = ({ templateId }) => {
+            navigation.navigate("TemplateScreen", { templateId });
+          };
+          return (
             <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
               <StatusBar barStyle="light-content" />
-              <ProgramScreen onPress={() => {}} style={style} />
+              <ProgramScreen
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={style}
+              />
             </View>
-          </WorkoutContextProvider>
-        )}
+          );
+        }}
       </StackNavigator.Screen>
       <StackNavigator.Screen name="WorkoutScreen">
-        {() => (
-          <WorkoutContextProvider>
-            <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
-              <StatusBar barStyle="light-content" />
-            </View>
-          </WorkoutContextProvider>
-        )}
+        {({ navigation, route }) => {
+          const { templateId } = route.params.return(
+            <WorkoutContextProvider templateId={templateId}>
+              <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
+                <StatusBar barStyle="light-content" />
+              </View>
+            </WorkoutContextProvider>
+          );
+        }}
       </StackNavigator.Screen>
       <StackNavigator.Screen name="TemplateScreen">
-        {() => {
+        {({ navigation, route }) => {
+          const { templateId } = route.params;
           return (
             <View
               style={{
@@ -90,7 +101,7 @@ export default function StackScreen({ style }) {
               }}
             >
               <StatusBar barStyle="dark-content" />
-              <WorkoutContextProvider>
+              <WorkoutContextProvider templateId={templateId}>
                 <TemplateScreen style={style} />
               </WorkoutContextProvider>
             </View>

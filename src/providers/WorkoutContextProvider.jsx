@@ -23,11 +23,13 @@ export const useWorkoutContext = () => {
 /** Responsible for maintaining session state
  */
 export default function WorkoutContextProvider({
+  templateId,
   sessionId,
   sessionName,
   children,
 }) {
   const [state, setState] = useState({
+    templateId,
     sessionId,
     sessionName,
     exercises: [],
@@ -60,7 +62,7 @@ export default function WorkoutContextProvider({
         ],
       };
 
-      const exercises = [
+      var exercises = [
         {
           key: "exercise-1",
           label: "Squat",
@@ -74,6 +76,22 @@ export default function WorkoutContextProvider({
           label: "Deadlift",
         },
       ];
+      if (state.templateId === 2) {
+        exercises = [
+          {
+            key: "exercise-4",
+            label: "Squat 2",
+          },
+          {
+            key: "exercise-5",
+            label: "Bench press 2",
+          },
+          {
+            key: "exercise-6",
+            label: "Deadlift 2",
+          },
+        ];
+      }
 
       setState({ ...state, data, exercises, updateExercises, loaded: true });
     })();

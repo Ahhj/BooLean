@@ -14,7 +14,13 @@ export default function TouchableCardList({
     ({ item }) => {
       return (
         <View style={{ ...styles.item, width }}>
-          <TouchableCard {...{ style, onPress, onLongPress }}>
+          <TouchableCard
+            {...{
+              style,
+              onPress: () => onPress(item),
+              onLongPress: () => onLongPress(item),
+            }}
+          >
             <Text
               style={{
                 ...(style ? (style.textStyle ? style.textStyle : {}) : {}),
