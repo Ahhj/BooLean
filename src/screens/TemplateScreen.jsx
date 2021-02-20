@@ -22,7 +22,10 @@ export default function TemplateScreen({ style }) {
   const onEdit = () => workoutContext.toggleActive();
   const onFinish = () => workoutContext.toggleActive();
   const onCancel = () => workoutContext.toggleActive();
-  const onClose = () => navigation.goBack();
+  const onClose = () => {
+    workoutContext.save();
+    navigation.goBack();
+  };
 
   const editButtonProps = {
     text: "Edit",

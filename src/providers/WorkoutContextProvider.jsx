@@ -29,77 +29,85 @@ export default function WorkoutContextProvider({
   sessionName,
   children,
 }) {
-  const [state, setState] = useState({
-    templateId,
-    sessionId,
-    sessionName,
-    exercises: [],
-    loaded: false,
-    active: false,
-  });
+  const [active, setActive] = useState(false);
+  const [exercises, setExercises] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const [shouldSave, setShouldSave] = useState(false);
 
   useEffect(() => {
-    loadObject(templateId).then((loaded) => {
-      var { exercises } = loaded;
+    if (!loaded) {
+      loadObject(templateId).then((loaded) => {
+        var { exercises } = loaded;
 
-      if (!exercises) {
-        exercises = [];
-      }
-
-      if (!exercises.length) {
-        exercises = [
-          {
-            key: "exercise-1",
-            label: "Squat",
-          },
-          {
-            key: "exercise-2",
-            label: "Bench press",
-          },
-          {
-            key: "exercise-3",
-            label: "Deadlift",
-          },
-        ];
-        if (templateId === 2) {
-          exercises = [
-            {
-              key: "exercise-4",
-              label: "Squat 2",
-            },
-            {
-              key: "exercise-5",
-              label: "Bench press 2",
-            },
-            {
-              key: "exercise-6",
-              label: "Deadlift 2",
-            },
-          ];
+        if (!exercises) {
+          exercises = [];
         }
-      }
-      setState({ ...state, exercises, loaded: true });
-    });
-  }, [templateId]);
 
-  // Used by children to update the exercises
-  const updateExercises = useCallback(
-    (updated) => {
-      setState({ ...state, exercises: updated });
-      saveObject(templateId, { exercises: updated });
-    },
-    [state, setState]
-  );
+        if (!exercises.length) {
+          exercises = [...defaultExercises[0]];
+          if (templateId === 2) {
+            exercises = [...defaultExercises[1]];
+          }
+        }
+
+        setLoaded(true);
+        setExercises(exercises);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (shouldSave) {
+      saveObject(templateId, { exercises });
+    }
+    setShouldSave(false);
+  }, [shouldSave]);
 
   const toggleActive = useCallback(() => {
-    setState({ ...state, active: !state.active });
-  }, [state, setState]);
+    setActive((active) => !active);
+  });
 
   return (
     <WorkoutContext.Provider
-      value={{ ...state, updateExercises, toggleActive }}
+      value={{
+        exercises,
+        setExercises,
+        toggleActive,
+        save: () => setShouldSave(true),
+      }}
     >
       {children}
     </WorkoutContext.Provider>
   );
 }
+
+const defaultExercises = [
+  [
+    {
+      key: "exercise-1",
+      label: "Squat",
+    },
+    {
+      key: "exercise-2",
+      label: "Bench press",
+    },
+    {
+      key: "exercise-3",
+      label: "Deadlift",
+    },
+  ],
+  [
+    {
+      key: "exercise-4",
+      label: "Squat 2",
+    },
+    {
+      key: "exercise-5",
+      label: "Bench press 2",
+    },
+    {
+      key: "exercise-6",
+      label: "Deadlift 2",
+    },
+  ],
+];

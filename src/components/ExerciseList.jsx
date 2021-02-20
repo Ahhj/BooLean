@@ -71,7 +71,7 @@ export default function ExerciseList() {
         renderItem={renderItem}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         style={{}}
-        onDragEnd={(updated) => workoutContext.updateExercises(updated.data)}
+        onDragEnd={(updated) => workoutContext.setExercises(updated.data)}
       />
     </View>
   );
