@@ -5,13 +5,14 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import { saveObject, loadObject } from "./storage";
 
-const Context = createContext(null);
+const WorkoutContext = createContext(null);
 
 /* Session data hook
  */
 export const useWorkoutContext = () => {
-  const contextState = useContext(Context);
+  const contextState = useContext(WorkoutContext);
   if (contextState === null) {
     throw new Error(
       "useWorkoutContext must be used within WorkoutContextProvider tag"
@@ -38,69 +39,54 @@ export default function WorkoutContextProvider({
   });
 
   useEffect(() => {
-    (async () => {
-      const data = {
-        0: [
-          {
-            headerText: "Reps",
-            selectedValue: 2,
-            values: [1, 2, 3],
-            onValueChange: (itemValue, itemIndex) => {},
-          },
-          {
-            headerText: "RPE",
-            selectedValue: 2,
-            values: [1, 2, 3],
-            onValueChange: (itemValue, itemIndex) => {},
-          },
-          {
-            headerText: "Weight",
-            selectedValue: 2,
-            values: [1, 2, 3],
-            onValueChange: (itemValue, itemIndex) => {},
-          },
-        ],
-      };
+    loadObject(templateId).then((loaded) => {
+      var { exercises } = loaded;
 
-      var exercises = [
-        {
-          key: "exercise-1",
-          label: "Squat",
-        },
-        {
-          key: "exercise-2",
-          label: "Bench press",
-        },
-        {
-          key: "exercise-3",
-          label: "Deadlift",
-        },
-      ];
-      if (state.templateId === 2) {
-        exercises = [
-          {
-            key: "exercise-4",
-            label: "Squat 2",
-          },
-          {
-            key: "exercise-5",
-            label: "Bench press 2",
-          },
-          {
-            key: "exercise-6",
-            label: "Deadlift 2",
-          },
-        ];
+      if (!exercises) {
+        exercises = [];
       }
 
-      setState({ ...state, data, exercises, updateExercises, loaded: true });
-    })();
-  }, []);
+      if (!exercises.length) {
+        exercises = [
+          {
+            key: "exercise-1",
+            label: "Squat",
+          },
+          {
+            key: "exercise-2",
+            label: "Bench press",
+          },
+          {
+            key: "exercise-3",
+            label: "Deadlift",
+          },
+        ];
+        if (templateId === 2) {
+          exercises = [
+            {
+              key: "exercise-4",
+              label: "Squat 2",
+            },
+            {
+              key: "exercise-5",
+              label: "Bench press 2",
+            },
+            {
+              key: "exercise-6",
+              label: "Deadlift 2",
+            },
+          ];
+        }
+      }
+      setState({ ...state, exercises, loaded: true });
+    });
+  }, [templateId]);
 
   // Used by children to update the exercises
   const updateExercises = useCallback(
     (updated) => {
       setState({ ...state, exercises: updated });
+      saveObject(templateId, { exercises: updated });
     },
     [state, setState]
   );
@@ -110,8 +96,10 @@ export default function WorkoutContextProvider({
   }, [state, setState]);
 
   return (
-    <Context.Provider value={{ ...state, updateExercises, toggleActive }}>
+    <WorkoutContext.Provider
+      value={{ ...state, updateExercises, toggleActive }}
+    >
       {children}
-    </Context.Provider>
+    </WorkoutContext.Provider>
   );
 }

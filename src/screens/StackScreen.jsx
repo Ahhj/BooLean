@@ -23,31 +23,6 @@ export default function StackScreen({ style }) {
    * when you click through the programs screen
    */
 
-  //   const renderBanner = useCallback(
-  //     (props) => {
-  //       const navigation = useNavigation();
-  //       return workoutContext.active
-  //         ? () => (
-  //             <SessionBanner
-  //               onPress={() => {
-  //                 navigation.navigate("TemplateScreenModal");
-  //               }}
-  //               {...style}
-  //             />
-  //           )
-  //         : null;
-  //     },
-  //     [workoutContext]
-  //   );
-  //   <StackNavigator.Screen name="Home">
-  //     {() => (
-  //       <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
-  //         <StatusBar barStyle="dark-content" />
-  //         <TabScreen {...{ renderBanner, style }} />
-  //       </View>
-  //     )}
-  //   </StackNavigator.Screen>;
-
   return (
     <StackNavigator.Navigator
       {...{
@@ -58,7 +33,8 @@ export default function StackScreen({ style }) {
       }}
     >
       <StackNavigator.Screen name="ProgramScreen">
-        {({ navigation }) => {
+        {({ navigation, route }) => {
+          // const { programId } = route.params;
           const onPress = ({ templateId }) => {};
           const onLongPress = ({ templateId }) => {
             navigation.navigate("TemplateScreen", { templateId });

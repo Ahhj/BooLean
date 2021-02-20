@@ -9,13 +9,14 @@ export default function ProgramScreen({
   style,
 }) {
   const data = [
-    { id: 1, title: "Hello world!", templateId: 1 },
-    { id: 2, title: "Goodbye world!", templateId: 2 },
+    { id: 1, title: "Workout 1!", templateId: 1 },
+    { id: 2, title: "Workout 2!", templateId: 2 },
   ];
   return (
     <SafeAreaView style={[style.container]}>
       <View style={{ height: "100%" }}>
         <TouchableCardList
+          onPress={onPress}
           onLongPress={onLongPress}
           data={data}
           numColumns={1}
