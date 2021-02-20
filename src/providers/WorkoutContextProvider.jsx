@@ -9,19 +9,8 @@ import { saveObject, loadObject } from "./storage";
 
 const WorkoutContext = createContext(null);
 
-/* Session data hook
- */
-export const useWorkoutContext = () => {
-  const contextState = useContext(WorkoutContext);
-  if (contextState === null) {
-    throw new Error(
-      "useWorkoutContext must be used within WorkoutContextProvider tag"
-    );
-  }
-  return contextState;
-};
-
-/** Responsible for maintaining session state
+/**
+ * Maintains workout state and makes available to children.
  */
 export default function WorkoutContextProvider({
   templateId,
@@ -34,6 +23,9 @@ export default function WorkoutContextProvider({
   const [loaded, setLoaded] = useState(false);
   const [shouldSave, setShouldSave] = useState(false);
 
+  /**
+   * Load the exercises from storage.
+   */
   useEffect(() => {
     if (!loaded) {
       loadObject(templateId).then((loaded) => {
@@ -56,6 +48,10 @@ export default function WorkoutContextProvider({
     }
   }, []);
 
+  /**
+   * Persist the state variables after the render
+   * if the shouldSave flag is set to true.
+   */
   useEffect(() => {
     if (shouldSave) {
       saveObject(templateId, { exercises });
@@ -80,6 +76,20 @@ export default function WorkoutContextProvider({
     </WorkoutContext.Provider>
   );
 }
+
+/**
+ * Hook to access workout context state. Call in children
+ * of WorkoutContextProvider
+ */
+export const useWorkoutContext = () => {
+  const contextState = useContext(WorkoutContext);
+  if (contextState === null) {
+    throw new Error(
+      "useWorkoutContext must be used within WorkoutContextProvider tag"
+    );
+  }
+  return contextState;
+};
 
 const defaultExercises = [
   [
