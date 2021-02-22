@@ -66,6 +66,7 @@ export default function WorkoutContextProvider({
   return (
     <WorkoutContext.Provider
       value={{
+        templateId,
         exercises,
         setExercises,
         toggleActive,

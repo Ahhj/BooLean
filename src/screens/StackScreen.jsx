@@ -3,9 +3,10 @@ import { View, StatusBar } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ProgramScreen from "./ProgramScreen";
-import TemplateScreen from "./TemplateScreen";
 
 import WorkoutContextProvider from "../providers/WorkoutContextProvider";
+import WorkoutTemplateScreen from "./workoutScreens/WorkoutTemplateScreen";
+import WorkoutSessionScreen from "./workoutScreens/WorkoutSessionScreen";
 
 const StackNavigator = createStackNavigator();
 
@@ -37,7 +38,7 @@ export default function StackScreen({ style }) {
           // const { programId } = route.params;
           const onPress = ({ templateId }) => {};
           const onLongPress = ({ templateId }) => {
-            navigation.navigate("TemplateScreen", { templateId });
+            navigation.navigate("WorkoutTemplateScreen", { templateId });
           };
           return (
             <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
@@ -51,18 +52,7 @@ export default function StackScreen({ style }) {
           );
         }}
       </StackNavigator.Screen>
-      <StackNavigator.Screen name="WorkoutScreen">
-        {({ navigation, route }) => {
-          const { templateId } = route.params.return(
-            <WorkoutContextProvider templateId={templateId}>
-              <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
-                <StatusBar barStyle="light-content" />
-              </View>
-            </WorkoutContextProvider>
-          );
-        }}
-      </StackNavigator.Screen>
-      <StackNavigator.Screen name="TemplateScreen">
+      <StackNavigator.Screen name="WorkoutSessionScreen">
         {({ navigation, route }) => {
           const { templateId } = route.params;
           return (
@@ -78,7 +68,29 @@ export default function StackScreen({ style }) {
             >
               <StatusBar barStyle="dark-content" />
               <WorkoutContextProvider templateId={templateId}>
-                <TemplateScreen style={style} />
+                <WorkoutSessionScreen style={style} />
+              </WorkoutContextProvider>
+            </View>
+          );
+        }}
+      </StackNavigator.Screen>
+      <StackNavigator.Screen name="WorkoutTemplateScreen">
+        {({ navigation, route }) => {
+          const { templateId } = route.params;
+          return (
+            <View
+              style={{
+                flex: 1,
+                height: "90%",
+                width: "100%",
+                backgroundColor: "#fff",
+                justifyContent: "center",
+                position: "absolute",
+              }}
+            >
+              <StatusBar barStyle="dark-content" />
+              <WorkoutContextProvider templateId={templateId}>
+                <WorkoutTemplateScreen style={style} />
               </WorkoutContextProvider>
             </View>
           );
