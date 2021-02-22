@@ -17,7 +17,7 @@ const StackNavigator = createStackNavigator();
  *   - TemplateScreenModal is a full screen modal for the user to interact
  *     with sessions.
  */
-export default function StackScreen({ style }) {
+export default function StackNavigatorScreen({ style }) {
   /**
    * TODO: currently no way to track the active/visible workout
    * need to separate active session from the sessions that show
