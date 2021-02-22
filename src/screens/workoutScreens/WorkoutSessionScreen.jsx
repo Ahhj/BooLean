@@ -7,7 +7,7 @@ import ExerciseList from "../../components/ExerciseList";
 import { useWorkoutContext } from "../../providers/WorkoutContextProvider";
 import { useNavigation } from "@react-navigation/native";
 
-import CloseButton from "./CloseButton";
+import CloseButton from "./components/CloseButton";
 
 export default function WorkoutSessionScreen({ style }) {
   const workoutContext = useWorkoutContext();

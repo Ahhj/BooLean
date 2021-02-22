@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -7,9 +7,10 @@ import ExerciseList from "../../components/ExerciseList";
 import { useWorkoutContext } from "../../providers/WorkoutContextProvider";
 import { useNavigation } from "@react-navigation/native";
 
-import CloseButton from "./CloseButton";
+import CloseButton from "./components/CloseButton";
 
 export default function WorkoutTemplateScreen({ style }) {
+  const [editable, setEditable] = useState(false);
   const workoutContext = useWorkoutContext();
 
   const navigation = useNavigation();
@@ -19,8 +20,9 @@ export default function WorkoutTemplateScreen({ style }) {
       templateId: workoutContext.templateId,
     });
   };
-  const onEdit = () => workoutContext.toggleActive();
+  const onEdit = () => setEditable(true);
   const onClose = () => {
+    setEditable(false);
     workoutContext.save();
     navigation.goBack();
   };
@@ -52,7 +54,7 @@ export default function WorkoutTemplateScreen({ style }) {
           marginBottom: "2%",
         }}
       >
-        <ExerciseList />
+        <ExerciseList editable={editable} />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
         <StartButton onPress={onStart} />
