@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";

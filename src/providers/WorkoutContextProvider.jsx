@@ -26,8 +26,8 @@ export default function WorkoutContextProvider({
   /**
    * Load the exercises from storage.
    */
-  useEffect(() => {
-    if (!loaded) {
+  const reload = useCallback(
+    () =>
       loadObject(templateId).then((loaded) => {
         var { exercises } = loaded;
 
@@ -44,7 +44,13 @@ export default function WorkoutContextProvider({
 
         setLoaded(true);
         setExercises(exercises);
-      });
+      }),
+    []
+  );
+
+  useEffect(() => {
+    if (!loaded) {
+      reload();
     }
   }, []);
 
@@ -68,6 +74,8 @@ export default function WorkoutContextProvider({
       value={{
         templateId,
         exercises,
+        active,
+        reload,
         setExercises,
         toggleActive,
         save: () => setShouldSave(true),

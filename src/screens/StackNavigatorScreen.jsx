@@ -38,7 +38,7 @@ export default function StackNavigatorScreen({ style }) {
           // const { programId } = route.params;
           const onPress = ({ templateId }) => {};
           const onLongPress = ({ templateId }) => {
-            navigation.navigate("WorkoutTemplateScreen", { templateId });
+            navigation.navigate("WorkoutSessionScreen", { templateId });
           };
           return (
             <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>

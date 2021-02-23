@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -8,15 +8,29 @@ import { useWorkoutContext } from "../../providers/WorkoutContextProvider";
 import { useNavigation } from "@react-navigation/native";
 
 import CloseButton from "./components/CloseButton";
+import CancelButton from "./components/CancelButton";
 
 export default function WorkoutSessionScreen({ style }) {
   const workoutContext = useWorkoutContext();
-
   const navigation = useNavigation();
+
+  // Call reload when on focus event
+  useEffect(
+    () =>
+      navigation.addListener("focus", () => {
+        workoutContext.reload();
+      }),
+    [navigation]
+  );
+
+  const onStart = () => workoutContext.toggleActive();
   const onFinish = () => workoutContext.toggleActive();
+  const onEdit = () =>
+    navigation.navigate("WorkoutTemplateScreen", {
+      templateId: workoutContext.templateId,
+    });
   const onCancel = () => workoutContext.toggleActive();
   const onClose = () => {
-    workoutContext.save();
     navigation.goBack();
   };
 
@@ -37,8 +51,12 @@ export default function WorkoutSessionScreen({ style }) {
           justifyContent: "space-between",
         }}
       >
-        <CancelButton onPress={onCancel} />
         <CloseButton onPress={onClose} />
+        {workoutContext.active ? (
+          <CancelButton onPress={onCancel} />
+        ) : (
+          <EditButton onPress={onEdit} />
+        )}
       </View>
       <View
         style={{
@@ -50,25 +68,57 @@ export default function WorkoutSessionScreen({ style }) {
         <ExerciseList />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
-        <FinishButton onPress={onFinish} />
+        {workoutContext.active ? (
+          <FinishButton onPress={onFinish} />
+        ) : (
+          <StartButton onPress={onStart} />
+        )}
       </View>
     </SafeAreaView>
   );
 }
 
-function CancelButton({ onPress }) {
+function EditButton({ onPress }) {
   return (
     <Button
       {...{
-        text: "Cancel",
-        type: "reject",
+        text: "Edit",
+        type: "secondary",
         onPress,
       }}
       Icon={({ color }) => (
-        <MaterialCommunityIcons name={"cancel"} color={color} size={20} />
+        <MaterialCommunityIcons
+          name={"square-edit-outline"}
+          color={color}
+          size={20}
+        />
       )}
       style={{
         width: 100,
+      }}
+    />
+  );
+}
+
+function StartButton({ onPress }) {
+  return (
+    <Button
+      {...{
+        text: "Start",
+        type: "primary",
+        onPress,
+      }}
+      Icon={({ color }) => (
+        <MaterialCommunityIcons
+          name={"arrow-right-drop-circle"}
+          color={color}
+          size={20}
+        />
+      )}
+      style={{
+        buttonStyle: {
+          width: "100%",
+        },
       }}
     />
   );

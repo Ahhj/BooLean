@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -10,18 +10,22 @@ import { useNavigation } from "@react-navigation/native";
 import CloseButton from "./components/CloseButton";
 
 export default function WorkoutTemplateScreen({ style }) {
-  const [editable, setEditable] = useState(false);
+  const [editable, setEditable] = useState(true);
   const workoutContext = useWorkoutContext();
-
   const navigation = useNavigation();
+
   const onStart = () => {
     workoutContext.toggleActive();
     navigation.navigate("WorkoutSessionScreen", {
       templateId: workoutContext.templateId,
     });
   };
-  const onEdit = () => setEditable(true);
   const onClose = () => {
+    setEditable(false);
+    navigation.goBack();
+  };
+
+  const onSave = () => {
     setEditable(false);
     workoutContext.save();
     navigation.goBack();
@@ -44,8 +48,8 @@ export default function WorkoutTemplateScreen({ style }) {
           justifyContent: "space-between",
         }}
       >
-        <EditButton onPress={onEdit} />
         <CloseButton onPress={onClose} />
+        <SaveButton onPress={onSave} />
       </View>
       <View
         style={{
@@ -57,45 +61,23 @@ export default function WorkoutTemplateScreen({ style }) {
         <ExerciseList editable={editable} />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
-        <StartButton onPress={onStart} />
+        <DeleteButton onPress={onStart} />
       </View>
     </SafeAreaView>
   );
 }
 
-function EditButton({ onPress }) {
+function DeleteButton({ onPress }) {
   return (
     <Button
       {...{
-        text: "Edit",
-        type: "secondary",
+        text: "Delete",
+        type: "reject",
         onPress,
       }}
       Icon={({ color }) => (
         <MaterialCommunityIcons
-          name={"square-edit-outline"}
-          color={color}
-          size={20}
-        />
-      )}
-      style={{
-        width: 100,
-      }}
-    />
-  );
-}
-
-function StartButton({ onPress }) {
-  return (
-    <Button
-      {...{
-        text: "Start",
-        type: "primary",
-        onPress,
-      }}
-      Icon={({ color }) => (
-        <MaterialCommunityIcons
-          name={"arrow-right-drop-circle"}
+          name={"trash-can-outline"}
           color={color}
           size={20}
         />
@@ -103,6 +85,28 @@ function StartButton({ onPress }) {
       style={{
         buttonStyle: {
           width: "100%",
+        },
+      }}
+    />
+  );
+}
+
+function SaveButton({ onPress }) {
+  return (
+    <Button
+      type="primary"
+      text="Save"
+      Icon={({ color }) => (
+        <MaterialCommunityIcons
+          name={"content-save-outline"}
+          color={color}
+          size={20}
+        />
+      )}
+      onPress={onPress}
+      style={{
+        buttonStyle: {
+          width: 100,
         },
       }}
     />
