@@ -4,13 +4,18 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";
 import { useWorkoutContext } from "../providers/WorkoutContextProvider";
 
-export default function ExerciseList() {
+export default function ExerciseList({ editable }) {
   const workoutContext = useWorkoutContext();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   const renderItem = ({ item, index, drag, isActive }) => {
+    const onPress = () => {
+      setModalVisible(true);
+      setSelectedItemIndex(index);
+    };
+    const onLongPress = editable ? drag : () => {};
     return (
       <View>
         <TouchableOpacity
@@ -24,11 +29,8 @@ export default function ExerciseList() {
             margin: "1%",
             padding: 10,
           }}
-          onPress={() => {
-            setModalVisible(true);
-            setSelectedItemIndex(index);
-          }}
-          onLongPress={drag}
+          onPress={onPress}
+          onLongPress={onLongPress}
         >
           <Text
             style={{

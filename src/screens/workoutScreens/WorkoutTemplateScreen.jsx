@@ -14,11 +14,9 @@ export default function WorkoutTemplateScreen({ style }) {
   const workoutContext = useWorkoutContext();
   const navigation = useNavigation();
 
-  const onStart = () => {
-    workoutContext.toggleActive();
-    navigation.navigate("WorkoutSessionScreen", {
-      templateId: workoutContext.templateId,
-    });
+  const onDelete = () => {
+    workoutContext.remove();
+    navigation.navigate("ProgramScreen");
   };
   const onClose = () => {
     setEditable(false);
@@ -61,7 +59,7 @@ export default function WorkoutTemplateScreen({ style }) {
         <ExerciseList editable={editable} />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
-        <DeleteButton onPress={onStart} />
+        <DeleteButton onPress={onDelete} />
       </View>
     </SafeAreaView>
   );

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import { saveObject, loadObject } from "./storage";
+import { saveObject, loadObject, removeItem } from "../storage";
 
 const WorkoutContext = createContext(null);
 
@@ -23,28 +23,39 @@ export default function WorkoutContextProvider({
   const [loaded, setLoaded] = useState(false);
   const [shouldSave, setShouldSave] = useState(false);
 
+  const save = () => setShouldSave(true);
+  const remove = useCallback(() => {
+    setLoaded(false);
+    removeItem(templateId);
+  });
+
   /**
    * Load the exercises from storage.
    */
   const reload = useCallback(
     () =>
-      loadObject(templateId).then((loaded) => {
-        var { exercises } = loaded;
+      loadObject(templateId)
+        .then((loaded) => {
+          var { exercises } = loaded;
 
-        if (!exercises) {
-          exercises = [];
-        }
-
-        if (!exercises.length) {
-          exercises = [...defaultExercises[0]];
-          if (templateId === 2) {
-            exercises = [...defaultExercises[1]];
+          if (!exercises) {
+            exercises = [];
           }
-        }
 
-        setLoaded(true);
-        setExercises(exercises);
-      }),
+          if (!exercises.length) {
+            exercises = [...defaultExercises[0]];
+            if (templateId === 2) {
+              exercises = [...defaultExercises[1]];
+            }
+          }
+
+          setExercises(exercises);
+          setLoaded(true);
+        })
+        .catch((e) => {
+          setExercises([]);
+          setLoaded(true);
+        }),
     []
   );
 
@@ -52,7 +63,7 @@ export default function WorkoutContextProvider({
     if (!loaded) {
       reload();
     }
-  }, []);
+  }, [loaded]);
 
   /**
    * Persist the state variables after the render
@@ -76,9 +87,10 @@ export default function WorkoutContextProvider({
         exercises,
         active,
         reload,
+        remove,
         setExercises,
         toggleActive,
-        save: () => setShouldSave(true),
+        save,
       }}
     >
       {children}

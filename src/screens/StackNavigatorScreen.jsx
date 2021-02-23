@@ -41,13 +41,20 @@ export default function StackNavigatorScreen({ style }) {
             navigation.navigate("WorkoutSessionScreen", { templateId });
           };
           return (
-            <View style={{ flex: 1, backgroundColor: "#6a51ae" }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "#6a51ae",
+              }}
+            >
               <StatusBar barStyle="light-content" />
-              <ProgramScreen
-                onPress={onPress}
-                onLongPress={onLongPress}
-                style={style}
-              />
+              <View style={{ height: "90%" }}>
+                <ProgramScreen
+                  onPress={onPress}
+                  onLongPress={onLongPress}
+                  style={style}
+                />
+              </View>
             </View>
           );
         }}
