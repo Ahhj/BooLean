@@ -1,0 +1,89 @@
+{
+    "userSettings": {
+        "darkMode": true,
+        "defaultUnits": {
+            "weight": "pqr"
+        }
+    },
+    "programKeys": ["abc"],
+    "blockKeys": ["ghi"],
+    "exerciseKeys": ["def"],
+    "workoutTemplateKeys": ["jkl"],
+    "workoutSessionKeys": ["mno"],
+    "units": {
+        "pqr": {
+            "shortName": "kg",
+            "longName": "kilogram"
+        }
+    },
+    "abc": {
+        "objectType": "program",
+        "numberOfWeeks": 10,
+        "tags": [],
+        "workoutTemplateKeys": ["jkl"]
+    },
+    "def": {
+        "objectType": "exercise",
+        "name": "squat",
+        "tags": []
+    },
+    "ghi": {
+        "objectType": "block",
+        "programKey": "abc",
+        "programName": "some program",
+        "startDateUtc": "2020-01-01T00:00:00",
+        "endDateUtc": "2020-02-01T00:00:00",
+        "finished": true,
+        "workoutSessionKeys": ["mno"]
+    },
+    "jkl": {
+        "objectType": "workoutTemplate",
+        "programKey": "abc",
+        "exercises": [
+            {
+                "exerciseKey": "def",
+                "workoutExerciseNumber": 1,
+                "sets": [
+                    {
+                        "exerciseKey": "def",
+                        "workoutExerciseNumber": 1,
+                        "sets": [
+                            {
+                                "exerciseSetNumber": 1,
+                                "repititions": 5,
+                                "ratePercievedExersion": 8,
+                                "weight": null,
+                                "weightUnitKey": "pqr"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+
+    },
+    "mno": {
+        "objectType": "workoutSession",
+        "workoutTemplateKey": "jkl",
+        "blockKey": "ghi",
+        "startTimeUtc": "2020-01-01T00:00:00",
+        "endTimeUtc": "2020-01-01T01:00:00",
+        "exercises": [
+            {
+                "exerciseKey": "def",
+                "workoutExercisesNumber": 1,
+                "sets": [
+                    {
+                        "exerciseSetNumber": 1,
+                        "repititions": 5,
+                        "ratePercievedExersion": 8,
+                        "weight": 100,
+                        "weightUnitKey": "pqr"
+                    }
+                ],
+                "notes": ""
+            }
+        ],
+        "notes": ""
+    }
+}
