@@ -41,8 +41,8 @@ export default function WorkoutTemplateScreen({ style }) {
           justifyContent: "space-between",
         }}
       >
+        <DeleteButton onPress={onPressDelete} />
         <CloseButton onPress={onPressClose} />
-        <SaveButton onPress={onPressSave} />
       </View>
       <View
         style={{
@@ -58,7 +58,7 @@ export default function WorkoutTemplateScreen({ style }) {
         />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
-        <DeleteButton onPress={onPressDelete} />
+        <SaveButton onPress={onPressSave} />
       </View>
     </SafeAreaView>
   );
@@ -69,7 +69,7 @@ function DeleteButton({ onPress }) {
     <Button
       {...{
         text: "Delete",
-        type: "reject",
+        type: "warning",
         onPress,
       }}
       Icon={({ color }) => (
@@ -81,7 +81,7 @@ function DeleteButton({ onPress }) {
       )}
       style={{
         buttonStyle: {
-          width: "100%",
+          width: 100,
         },
       }}
     />
@@ -103,7 +103,7 @@ function SaveButton({ onPress }) {
       onPress={onPress}
       style={{
         buttonStyle: {
-          width: 100,
+          width: "100%",
         },
       }}
     />

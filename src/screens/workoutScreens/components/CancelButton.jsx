@@ -8,7 +8,7 @@ export default function CancelButton({ onPress }) {
     <Button
       {...{
         text: "Cancel",
-        type: "reject",
+        type: "warning",
         onPress,
       }}
       Icon={({ color }) => (

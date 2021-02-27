@@ -11,8 +11,8 @@ export default function Button({ type, text, Icon, onPress, style }) {
         return { ...buttonStyle, ...styles.secondaryButtonStyle };
       case "accept":
         return { ...buttonStyle, ...styles.acceptButtonStyle };
-      case "reject":
-        return { ...buttonStyle, ...styles.rejectButtonStyle };
+      case "warning":
+        return { ...buttonStyle, ...styles.warningButtonStyle };
     }
   })();
 
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   acceptButtonStyle: {
     backgroundColor: "#1FC503",
   },
-  rejectButtonStyle: {
+  warningButtonStyle: {
     backgroundColor: "#CF1907",
   },
   primaryButtonStyle: {
