@@ -29,6 +29,7 @@ export default function ProgramTemplateProvider(props) {
     }
   }, [shouldLoad, shouldSave]);
 
+  // Don't call directly: call setShouldLoad(true) instead
   const _load = useCallback(() => {
     loadObject(programTemplateKey, {
       workoutTemplateKeys,
@@ -42,6 +43,7 @@ export default function ProgramTemplateProvider(props) {
     setShouldLoad(false);
   }, [programTemplateKey, workoutTemplateKeys, numberOfWeeks, tags]);
 
+  // Don't call directly: call setShouldSave(true) instead
   const _save = useCallback(() => {
     saveObject(programTemplateKey, {
       workoutTemplateKeys,
@@ -65,7 +67,7 @@ export default function ProgramTemplateProvider(props) {
       setWorkoutTemplateKeys([
         ...workoutTemplateKeys.filter((key) => key !== workoutTemplateKey),
       ]);
-      // TODO: clear storage
+      setShouldSave(true);
     },
     [workoutTemplateKeys]
   );

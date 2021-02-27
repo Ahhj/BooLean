@@ -34,6 +34,7 @@ export default function WorkoutTemplateProvider(props) {
     }
   }, [workoutTemplateKey, shouldLoad, shouldSave, shouldRemove]);
 
+  // Don't call directly: call setShouldLoad(true) instead
   const _load = useCallback(() => {
     loadObject(workoutTemplateKey, { sets }).then(({ sets }) => {
       setSets(sets);
@@ -41,12 +42,14 @@ export default function WorkoutTemplateProvider(props) {
     setShouldLoad(false);
   }, [workoutTemplateKey]);
 
+  // Don't call directly: call setShouldSave(true) instead
   const _save = useCallback(() => {
     saveObject(workoutTemplateKey, { sets })
       .then(() => programActions.addWorkout(workoutTemplateKey))
       .then(() => setShouldSave(false));
   }, [workoutTemplateKey, sets]);
 
+  // Don't call directly: call setShouldRemove(true) instead
   const _remove = useCallback(() => {
     removeItem(workoutTemplateKey)
       .then(() => programActions.removeWorkout(workoutTemplateKey))
