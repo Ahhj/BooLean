@@ -10,7 +10,9 @@ import {
 import ProgramTemplateContext from "./context";
 
 export default function ProgramTemplateProvider(props) {
-  //   const [programKey, setProgramKey] = useState(props.programKey);
+  const [programTemplateKey, setProgramTemplateKey] = useState(
+    props.programTemplateKey
+  );
   const [workoutTemplateKeys, setWorkoutTemplateKeys] = useState([]);
   const [numberOfWeeks, setNumberOfWeeks] = useState(0);
   const [tags, setTags] = useState([]);
@@ -20,31 +22,34 @@ export default function ProgramTemplateProvider(props) {
 
   useEffect(() => {
     if (shouldLoad) {
-      loadObject(props.programTemplateKey, {
-        workoutTemplateKeys,
-        numberOfWeeks,
-        tags,
-      }).then((data) => {
-        setWorkoutTemplateKeys(data.workoutTemplateKeys);
-        setNumberOfWeeks(data.numberOfWeeks);
-        setTags(data.tags);
-      });
-      setShouldLoad(false);
+      _load();
     }
-
     if (shouldSave) {
-      saveObject(props.programTemplateKey, {
-        workoutTemplateKeys,
-        numberOfWeeks,
-        tags,
-      });
-      setShouldSave(false);
+      _save();
     }
   }, [shouldLoad, shouldSave]);
 
-  const save = useCallback(() => setShouldSave(true));
+  const _load = useCallback(() => {
+    loadObject(programTemplateKey, {
+      workoutTemplateKeys,
+      numberOfWeeks,
+      tags,
+    }).then((data) => {
+      setWorkoutTemplateKeys(data.workoutTemplateKeys);
+      setNumberOfWeeks(data.numberOfWeeks);
+      setTags(data.tags);
+    });
+    setShouldLoad(false);
+  }, [programTemplateKey, workoutTemplateKeys, numberOfWeeks, tags]);
 
-  const load = useCallback(() => setShouldLoad(true));
+  const _save = useCallback(() => {
+    saveObject(programTemplateKey, {
+      workoutTemplateKeys,
+      numberOfWeeks,
+      tags,
+    });
+    setShouldSave(false);
+  }, [programTemplateKey, workoutTemplateKeys, numberOfWeeks, tags]);
 
   const addWorkout = useCallback(
     (key) => {
@@ -67,7 +72,12 @@ export default function ProgramTemplateProvider(props) {
 
   const value = {
     state: { workoutTemplateKeys, numberOfWeeks, tags },
-    actions: { save, load, addWorkout, removeWorkout },
+    actions: {
+      save: () => setShouldSave(true),
+      load: () => setShouldLoad(true),
+      addWorkout,
+      removeWorkout,
+    },
   };
 
   return (
