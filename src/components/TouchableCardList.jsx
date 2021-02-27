@@ -41,7 +41,7 @@ export default function TouchableCardList({
       key="blah2"
       data={data}
       renderItem={renderItem}
-      keyExtractor={(item) => `${item.id}`}
+      keyExtractor={(item) => item.key}
       numColumns={numColumns}
       horizontal={false}
     />

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import ExerciseModal from "./ExerciseModal";
-import { useWorkoutContext } from "../providers/WorkoutContextProvider";
 
-export default function ExerciseList({ editable }) {
-  const workoutContext = useWorkoutContext();
-
+export default function ExerciseList({
+  editable,
+  exercises,
+  onChangeExercises,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
@@ -55,16 +56,12 @@ export default function ExerciseList({ editable }) {
       }}
     >
       <ExerciseModal
-        title={
-          workoutContext.exercises.length
-            ? workoutContext.exercises[selectedItemIndex].label
-            : null
-        }
+        title={exercises.length ? exercises[selectedItemIndex].label : null}
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
       />
       <DraggableFlatList
-        data={workoutContext.exercises.map((item, index) => {
+        data={exercises.map((item, index) => {
           return {
             ...item,
             backgroundColor: "gray",
@@ -73,7 +70,7 @@ export default function ExerciseList({ editable }) {
         renderItem={renderItem}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         style={{}}
-        onDragEnd={(updated) => workoutContext.setExercises(updated.data)}
+        onDragEnd={(updated) => onChangeExercises(updated.data)}
       />
     </View>
   );

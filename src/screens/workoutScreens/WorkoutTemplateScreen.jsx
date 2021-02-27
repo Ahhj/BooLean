@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback } from "react";
 import { View, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import Button from "../../components/Button";
 import ExerciseList from "../../components/ExerciseList";
-import { useWorkoutContext } from "../../providers/WorkoutContextProvider";
+
 import { useNavigation } from "@react-navigation/native";
+import { useWorkoutTemplate } from "../../providers/workoutTemplate/use";
 
 import CloseButton from "./components/CloseButton";
 
 export default function WorkoutTemplateScreen({ style }) {
-  const [editable, setEditable] = useState(true);
-  const workoutContext = useWorkoutContext();
   const navigation = useNavigation();
+  const { state: workoutState, actions: workoutActions } = useWorkoutTemplate();
 
-  const onDelete = () => {
-    workoutContext.remove();
-    navigation.navigate("ProgramScreen");
-  };
-  const onClose = () => {
-    setEditable(false);
+  const onPressSave = useCallback(() => {
+    workoutActions.save();
     navigation.goBack();
-  };
-
-  const onSave = () => {
-    setEditable(false);
-    workoutContext.save();
+  });
+  const onPressDelete = useCallback(() => {
+    workoutActions.remove();
     navigation.goBack();
-  };
+  });
+  const onPressClose = useCallback(() => navigation.goBack());
 
   return (
     <SafeAreaView
@@ -46,8 +41,8 @@ export default function WorkoutTemplateScreen({ style }) {
           justifyContent: "space-between",
         }}
       >
-        <CloseButton onPress={onClose} />
-        <SaveButton onPress={onSave} />
+        <CloseButton onPress={onPressClose} />
+        <SaveButton onPress={onPressSave} />
       </View>
       <View
         style={{
@@ -56,10 +51,14 @@ export default function WorkoutTemplateScreen({ style }) {
           marginBottom: "2%",
         }}
       >
-        <ExerciseList editable={editable} />
+        <ExerciseList
+          editable={true}
+          exercises={[]}
+          onChangeExercises={(updated) => {}}
+        />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
-        <DeleteButton onPress={onDelete} />
+        <DeleteButton onPress={onPressDelete} />
       </View>
     </SafeAreaView>
   );

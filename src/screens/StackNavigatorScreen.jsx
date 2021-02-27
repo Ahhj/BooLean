@@ -3,10 +3,10 @@ import { View, StatusBar } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ProgramScreen from "./ProgramScreen";
-
-import WorkoutContextProvider from "../providers/WorkoutContextProvider";
 import WorkoutTemplateScreen from "./workoutScreens/WorkoutTemplateScreen";
-import WorkoutSessionScreen from "./workoutScreens/WorkoutSessionScreen";
+
+import WorkoutTemplateProvider from "../providers/workoutTemplate/provider";
+import ProgramTemplateProvider from "../providers/programTemplate/provider";
 
 const StackNavigator = createStackNavigator();
 
@@ -23,86 +23,84 @@ export default function StackNavigatorScreen({ style }) {
    * need to separate active session from the sessions that show
    * when you click through the programs screen
    */
+  const programTemplateKey = "default-program";
 
   return (
-    <StackNavigator.Navigator
-      {...{
-        headerMode: "none",
-        mode: "modal",
-        transparentCard: true,
-        cardStyle: { opacity: 1 },
-      }}
-    >
-      <StackNavigator.Screen name="ProgramScreen">
-        {({ navigation, route }) => {
-          // const { programId } = route.params;
-          const onPress = ({ templateId }) => {};
-          const onLongPress = ({ templateId }) => {
-            navigation.navigate("WorkoutSessionScreen", { templateId });
-          };
-          return (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: "#6a51ae",
-              }}
-            >
-              <StatusBar barStyle="light-content" />
-              <View style={{ height: "90%" }}>
-                <ProgramScreen
-                  onPress={onPress}
-                  onLongPress={onLongPress}
-                  style={style}
-                />
+    <ProgramTemplateProvider programTemplateKey={programTemplateKey}>
+      <StackNavigator.Navigator
+        {...{
+          headerMode: "none",
+          mode: "modal",
+          transparentCard: true,
+          cardStyle: { opacity: 1 },
+        }}
+      >
+        <StackNavigator.Screen name="ProgramScreen">
+          {({ route }) => {
+            return (
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: "#6a51ae",
+                }}
+              >
+                <StatusBar barStyle="light-content" />
+                <View style={{ height: "90%" }}>
+                  <ProgramScreen style={style} />
+                </View>
               </View>
-            </View>
-          );
-        }}
-      </StackNavigator.Screen>
-      <StackNavigator.Screen name="WorkoutSessionScreen">
-        {({ navigation, route }) => {
-          const { templateId } = route.params;
-          return (
-            <View
-              style={{
-                flex: 1,
-                height: "90%",
-                width: "100%",
-                backgroundColor: "#fff",
-                justifyContent: "center",
-                position: "absolute",
-              }}
-            >
-              <StatusBar barStyle="dark-content" />
-              <WorkoutContextProvider templateId={templateId}>
-                <WorkoutSessionScreen style={style} />
-              </WorkoutContextProvider>
-            </View>
-          );
-        }}
-      </StackNavigator.Screen>
-      <StackNavigator.Screen name="WorkoutTemplateScreen">
-        {({ navigation, route }) => {
-          const { templateId } = route.params;
-          return (
-            <View
-              style={{
-                flex: 1,
-                height: "90%",
-                width: "100%",
-                backgroundColor: "#fff",
-                justifyContent: "center",
-                position: "absolute",
-              }}
-            >
-              <StatusBar barStyle="dark-content" />
-              <WorkoutContextProvider templateId={templateId}>
-                <WorkoutTemplateScreen style={style} />
-              </WorkoutContextProvider>
-            </View>
-          );
-        }}
-      </StackNavigator.Screen>
-    </StackNavigator.Navigator>
+            );
+          }}
+        </StackNavigator.Screen>
+        <StackNavigator.Screen name="WorkoutTemplateScreen">
+          {({ route }) => {
+            const { workoutTemplateKey } = route.params;
+
+            return (
+              <View style={workoutContainerStyle}>
+                <StatusBar barStyle="dark-content" />
+                <WorkoutTemplateProvider
+                  workoutTemplateKey={workoutTemplateKey}
+                >
+                  <WorkoutTemplateScreen style={style} />
+                </WorkoutTemplateProvider>
+              </View>
+            );
+          }}
+        </StackNavigator.Screen>
+      </StackNavigator.Navigator>
+    </ProgramTemplateProvider>
   );
 }
+
+const workoutContainerStyle = {
+  flex: 1,
+  height: "90%",
+  width: "100%",
+  backgroundColor: "#fff",
+  justifyContent: "center",
+  position: "absolute",
+};
+
+// <StackNavigator.Screen name="WorkoutSessionScreen">
+//   {({ navigation, route }) => {
+//     const { templateId } = route.params;
+//     return (
+//       <View
+//         style={{
+//           flex: 1,
+//           height: "90%",
+//           width: "100%",
+//           backgroundColor: "#fff",
+//           justifyContent: "center",
+//           position: "absolute",
+//         }}
+//       >
+//         <StatusBar barStyle="dark-content" />
+//         <WorkoutContextProvider templateId={templateId}>
+//           <WorkoutSessionScreen style={style} />
+//         </WorkoutContextProvider>
+//       </View>
+//     );
+//   }}
+// </StackNavigator.Screen>;

@@ -1,38 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import TouchableCardList from "../components/TouchableCardList";
-import { listItems } from "../storage";
 import Button from "../components/Button";
+import { useProgramTemplate } from "../providers/programTemplate/use";
 
-export default function ProgramScreen({ onPress, onLongPress, style }) {
+export default function ProgramScreen({ style }) {
+  const { state, actions } = useProgramTemplate();
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
 
-  // Call reload when on focus event
-  useEffect(
-    () =>
-      navigation.addListener("focus", () => {
-        listItems().then((keys) => {
-          const data = keys
-            .map((key, index) => {
-              const templateId = key.split("@")[1];
-              if (templateId) {
-                return {
-                  id: index,
-                  title: `Workout ${index}`,
-                  templateId: key.split("@")[1],
-                };
-              }
-            })
-            .filter((item) => !!item);
-          setData(data);
-        });
-      }),
-    [navigation]
-  );
+  const onPressWorkout = useCallback(({ workoutTemplateKey }) => {});
+
+  const onLongPressWorkout = useCallback(({ workoutTemplateKey }) => {
+    navigation.navigate("WorkoutTemplateScreen", {
+      workoutTemplateKey: workoutTemplateKey,
+      programTemplateKey: state.programTemplateKey,
+    });
+  });
+
+  const onPressAddWorkout = useCallback(() => {
+    navigation.navigate("WorkoutTemplateScreen", {
+      workoutTemplateKey: null,
+      programTemplateKey: state.programTemplateKey,
+    });
+  }, []);
 
   return (
     <SafeAreaView
@@ -51,21 +44,21 @@ export default function ProgramScreen({ onPress, onLongPress, style }) {
         }}
       >
         <TouchableCardList
-          onPress={onPress}
-          onLongPress={onLongPress}
-          data={data}
+          onPress={onPressWorkout}
+          onLongPress={onLongPressWorkout}
+          data={state.workoutTemplateKeys.map((workoutTemplateKey) => {
+            return {
+              workoutTemplateKey,
+              title: workoutTemplateKey,
+              key: workoutTemplateKey,
+            };
+          })}
           numColumns={1}
           style={style}
         />
       </View>
       <View style={{ ...style.bottom, flexDirection: "row" }}>
-        <AddButton
-          onPress={() =>
-            navigation.navigate("WorkoutTemplateScreen", {
-              templateId: data.length,
-            })
-          }
-        />
+        <AddButton onPress={onPressAddWorkout} />
       </View>
     </SafeAreaView>
   );
