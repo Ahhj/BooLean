@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { SafeAreaView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -11,14 +11,14 @@ export default function ProgramScreen({ style }) {
   const { state, actions } = useProgramTemplate();
   const navigation = useNavigation();
 
-  const onPressWorkout = useCallback(({ workoutTemplateKey }) => {});
-
-  const onLongPressWorkout = useCallback(({ workoutTemplateKey }) => {
+  const onPressWorkout = useCallback(({ workoutTemplateKey }) => {
     navigation.navigate("WorkoutTemplateScreen", {
       workoutTemplateKey: workoutTemplateKey,
       programTemplateKey: state.programTemplateKey,
     });
   });
+
+  const onLongPressWorkout = useCallback(({ workoutTemplateKey }) => {});
 
   const onPressAddWorkout = useCallback(() => {
     navigation.navigate("WorkoutTemplateScreen", {
