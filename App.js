@@ -6,6 +6,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import StackNavigatorScreen from "./src/screens/StackNavigatorScreen";
 
+import StoryBookUI from "./storybook";
+
 function App() {
   return (
     <SafeAreaProvider>
@@ -39,4 +41,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+const IS_STORYBOOK = true;
+
+export default IS_STORYBOOK ? StoryBookUI : App;

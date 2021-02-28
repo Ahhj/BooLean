@@ -24,6 +24,9 @@ export default function WorkoutTemplateScreen({ style }) {
   });
   const onPressClose = useCallback(() => navigation.goBack());
 
+  // TODO: editable switch
+  // TODO: warning modal before delete
+  // TODO: preview modal onLongPress
   return (
     <SafeAreaView
       style={{

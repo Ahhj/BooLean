@@ -72,7 +72,7 @@ export default function ProgramTemplateProvider(props) {
     [workoutTemplateKeys]
   );
 
-  const value = {
+  const providerValue = {
     state: { workoutTemplateKeys, numberOfWeeks, tags },
     actions: {
       save: () => setShouldSave(true),
@@ -83,7 +83,7 @@ export default function ProgramTemplateProvider(props) {
   };
 
   return (
-    <ProgramTemplateContext.Provider value={value}>
+    <ProgramTemplateContext.Provider value={providerValue}>
       {props.children}
     </ProgramTemplateContext.Provider>
   );
