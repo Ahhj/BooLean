@@ -55,11 +55,6 @@ export default function ExerciseList({
         marginVertical: "1%",
       }}
     >
-      <ExerciseModal
-        title={exercises.length ? exercises[selectedItemIndex].label : null}
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-      />
       <DraggableFlatList
         data={exercises.map((item, index) => {
           return {

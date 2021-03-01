@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { View, SafeAreaView } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -13,16 +13,30 @@ import CloseButton from "./components/CloseButton";
 export default function WorkoutTemplateScreen({ style }) {
   const navigation = useNavigation();
   const { state: workoutState, actions: workoutActions } = useWorkoutTemplate();
+  const [goBackOnComplete, setGoBackOnComplete] = useState(false);
+
+  useEffect(() => {
+    if (
+      goBackOnComplete &&
+      !workoutState.saving &&
+      !workoutState.loading &&
+      !workoutState.removing
+    ) {
+      navigation.goBack();
+    }
+  }, [workoutState.saving, workoutState.loading, workoutState.removing]);
 
   const onPressSave = useCallback(() => {
     workoutActions.save();
-    navigation.goBack();
+    setGoBackOnComplete(true);
   });
   const onPressDelete = useCallback(() => {
     workoutActions.remove();
-    navigation.goBack();
+    setGoBackOnComplete(true);
   });
-  const onPressClose = useCallback(() => navigation.goBack());
+  const onPressClose = useCallback(() => {
+    setGoBackOnComplete(true);
+  });
 
   // TODO: editable switch
   // TODO: warning modal before delete

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableHighlight, StyleSheet } from "react-native";
+import { View, Text, TouchableHighlight } from "react-native";
 
 export default function Button({ type, text, Icon, onPress, style }) {
   var buttonStyle = { ...styles.buttonStyle, ...style.buttonStyle };
@@ -34,7 +34,7 @@ export default function Button({ type, text, Icon, onPress, style }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   buttonStyle: {
     borderRadius: 20,
     padding: 20,
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   },
   iconSize: 30,
   iconStyle: { color: "white" },
-});
+};

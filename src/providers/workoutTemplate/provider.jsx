@@ -69,7 +69,13 @@ export default function WorkoutTemplateProvider(props) {
   );
 
   const providerValue = {
-    state: { workoutTemplateKey, sets },
+    state: {
+      workoutTemplateKey,
+      sets,
+      saving: shouldSave,
+      loading: shouldLoad,
+      removing: shouldRemove,
+    },
     actions: {
       save: () => setShouldSave(true),
       load: () => setShouldLoad(true),
